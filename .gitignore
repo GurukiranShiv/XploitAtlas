@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+*.db
+.env
+.venv/
+venv/
+node_modules/
+.DS_Store
+.pytest_cache/
+
+# Local runtime files
+backend/.env
+backend/*.db
+.env.local
+# IDE/editor
+.vscode/
+.idea/
+# OS files
+Thumbs.db
