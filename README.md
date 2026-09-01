@@ -1,3 +1,13 @@
+> **VulnOrbit — real-source vulnerability intelligence**
+>
+> Explore authoritative feeds in an animated 3D universe, investigate evidence and changes, check package versions, and learn with real vulnerability records.
+>
+> **[Open VulnOrbit and setup instructions](vulnorbit/README.md)** · **[Download the standalone project](vulnorbit-source.zip?raw=1)**
+>
+> Start the self-contained application with `cd vulnorbit` and `python start.py`, or use its Windows launcher. VulnOrbit imports actual provider responses into its own initially empty database.
+
+---
+
 # Exploit-Aware Vulnerability Prioritization Platform
 
 A SOC-focused vulnerability-management project that ranks scanner findings using **CVSS + EPSS + CISA KEV + exploit maturity + asset exposure + business criticality**.
