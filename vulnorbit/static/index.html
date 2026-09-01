@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0d12">
+  <meta name="description" content="VulnOrbit is an open-source observatory for real vulnerability intelligence, exploitation evidence, package advisories, and remediation.">
+  <title>VulnOrbit — Vulnerability intelligence, in perspective</title>
+  <link rel="icon" type="image/svg+xml" href="/static/mark.svg">
+  <link rel="stylesheet" href="/static/style.css">
+  <script type="module" src="/static/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to intelligence</a>
+  <header class="topbar">
+    <a class="brand" href="#universe" aria-label="VulnOrbit home"><img src="/static/mark.svg" alt="" width="36" height="36"><span>Vuln<span class="accent">Orbit</span><small>OPEN INTELLIGENCE</small></span></a>
+    <nav class="nav" aria-label="Main navigation">
+      <button type="button" data-view="universe" class="nav-link active" aria-current="page">Universe</button>
+      <button type="button" data-view="intelligence" class="nav-link">Intelligence</button>
+      <button type="button" data-view="changes" class="nav-link">Changes</button>
+      <button type="button" data-view="packages" class="nav-link">Packages</button>
+      <button type="button" data-view="sources" class="nav-link">Sources</button>
+      <button type="button" data-view="learn" class="nav-link">Learn</button>
+    </nav>
+    <div class="header-actions"><a class="icon-button source-link" href="/api/source" title="Download the open-source project" aria-label="Download the open-source project"><span data-icon="code"></span></a><button id="refresh" class="button compact"><span data-icon="refresh"></span><span>Sync feeds</span></button></div>
+  </header>
+  <main id="main" class="shell">
+    <section class="intro">
+      <div><div class="eyebrow"><span class="tiny-orbit"></span> VULNERABILITY OBSERVATORY <span class="eyebrow-divider">/</span> <span id="today"></span></div>
+      <h1>Intelligence. <span>In perspective.</span></h1>
+      <p>Connect the evidence. Understand the impact. Find what matters next.</p></div>
+      <div class="connection"><span id="connection-dot" class="status-dot pending"></span><div><strong id="connection-title">Connecting to your catalog</strong><small id="connection-detail">Real sources · no generated records</small></div></div>
+    </section>
+    <div id="global-notice" class="notice" role="status" hidden></div>
+    <section class="stats" aria-label="Current local catalog statistics">
+      <article class="stat"><div class="stat-label">Vulnerabilities tracked <span data-icon="nodes"></span></div><div class="stat-value" id="stat-total">—</div><div class="stat-note">Unique records in your catalog</div></article>
+      <article class="stat"><div class="stat-label">Known exploited <span class="coral" data-icon="target"></span></div><div class="stat-value coral" id="stat-kev">—</div><div class="stat-note">Confirmed in the CISA KEV catalog</div></article>
+      <article class="stat"><div class="stat-label">Critical severity <span class="purple" data-icon="shield"></span></div><div class="stat-value" id="stat-critical">—</div><div class="stat-note">Source-reported CVSS ≥ 9.0</div></article>
+      <article class="stat"><div class="stat-label">Published this week <span class="accent" data-icon="spark"></span></div><div class="stat-value" id="stat-new">—</div><div class="stat-note">Tracked records · rolling seven days</div></article>
+    </section>
+
+    <section id="view-universe" class="view">
+      <div class="section-heading"><div><span class="eyebrow muted">01 / EXPLORE</span><h2>Your vulnerability universe</h2></div><div class="segmented" aria-label="Visualization"><button class="active" data-mode="space" aria-pressed="true"><span data-icon="orbit"></span>3D universe</button><button data-mode="table" aria-pressed="false"><span data-icon="list"></span>Table</button></div></div>
+      <form id="filters" class="filters" role="search">
+        <label class="search"><span data-icon="search"></span><span class="sr-only">Search CVE, vendor, product, or CWE</span><input id="search" name="q" type="search" placeholder="Search CVE, vendor, product, or CWE…" autocomplete="off" maxlength="200"><kbd>/</kbd></label>
+        <label class="select-wrap"><span class="sr-only">Severity</span><select name="severity" id="severity"><option value="all">All severities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option><option>None</option><option>Unknown</option></select></label>
+        <label class="select-wrap"><span class="sr-only">Publication window</span><select name="days" id="days"><option value="0">All tracked time</option><option value="1">Published · 24 hours</option><option value="7">Published · 7 days</option><option value="30">Published · 30 days</option><option value="90">Published · 90 days</option><option value="365">Published · 1 year</option></select></label>
+        <label class="check-filter"><input id="kev-only" name="kev" type="checkbox"><span class="status-dot coral-bg"></span>Known exploited</label>
+        <button type="button" class="icon-button" id="reset-filters" title="Reset filters" aria-label="Reset filters"><span data-icon="reset"></span></button>
+      </form>
+      <div class="explore-layout">
+        <section id="universe-panel" class="universe-panel panel" aria-label="Interactive vulnerability visualization">
+          <div class="canvas-topline"><span><span class="status-dot accent-bg"></span><strong id="node-count">0</strong> real records <span id="subset-note" class="muted"></span></span><span class="micro">VENDOR CONSTELLATIONS</span></div>
+          <div id="canvas-wrap" class="canvas-wrap"><canvas id="universe" tabindex="0" aria-label="3D vulnerability universe. Drag to orbit, scroll or press plus and minus to zoom, arrow keys to rotate. Use Table for a keyboard-accessible record list."></canvas><div id="canvas-tooltip" class="canvas-tooltip" hidden></div><div id="canvas-empty" class="canvas-empty"><span class="empty-orbit" aria-hidden="true"></span><h3>Waiting for the first source</h3><p>Real vulnerabilities will appear as feeds respond.<br>No sample dataset is loaded.</p><button class="button subtle" data-view="sources">See source status <span data-icon="arrow"></span></button></div></div>
+          <div class="canvas-controls"><span class="micro gesture-hint">DRAG TO ORBIT <span>·</span> SCROLL TO ZOOM <span>·</span> SELECT TO INVESTIGATE</span><div><button class="icon-button" id="zoom-in" title="Zoom in" aria-label="Zoom in"><span data-icon="plus"></span></button><button class="icon-button" id="zoom-out" title="Zoom out" aria-label="Zoom out"><span data-icon="minus"></span></button><button class="icon-button" id="reset-camera" title="Reset camera" aria-label="Reset camera"><span data-icon="reset"></span></button><button class="icon-button" id="motion" title="Pause orbit" aria-label="Pause orbit" aria-pressed="false"><span data-icon="pause"></span></button><button class="icon-button" id="fullscreen" title="Expand universe" aria-label="Expand universe"><span data-icon="expand"></span></button></div></div>
+          <div class="legend"><span><i class="coral-bg"></i>Known exploited</span><span><i class="purple-bg"></i>Critical</span><span><i class="amber-bg"></i>High</span><span><i class="blue-bg"></i>Medium / low</span><span><i class="gray-bg"></i>Unknown</span><button class="text-button" data-view="learn">How to read this <span data-icon="arrow"></span></button></div>
+          <p class="canvas-caption">Each point is a real vulnerability. Size reflects CVSS; color gives KEV precedence. Shared vendors form clusters. Position and distance are visual layout, not measured risk.</p>
+        </section>
+        <section id="inline-table-panel" class="panel" hidden><div class="panel-heading"><h3>Matching intelligence</h3><span id="inline-count" class="pill"></span></div><div id="inline-table"></div><div class="table-pagination"><button class="button subtle" id="inline-prev">Previous</button><span id="inline-page" class="muted"></span><button class="button subtle" id="inline-next">Next</button></div></section>
+        <aside class="panel radar"><div class="panel-heading"><h3><span class="status-dot coral-bg"></span> Exploitation radar</h3><span class="pill coral-pill">KEV</span></div><p class="panel-description">Most recent additions in the official catalog. Known exploitation is evidence, not a live attack counter.</p><div id="radar-list" class="radar-list"></div><button class="radar-footer text-button" id="see-kev">Explore known exploited <span data-icon="arrow"></span></button></aside>
+      </div>
+      <section class="recent-section"><div class="section-heading"><div><span class="eyebrow muted">LATEST SIGNALS</span><h2>Recently published</h2></div><button class="text-button" id="see-recent">View intelligence <span data-icon="arrow"></span></button></div><div class="recent-grid" id="recent-grid"></div></section>
+    </section>
+
+    <section id="view-intelligence" class="view" hidden>
+      <div class="section-heading"><div><span class="eyebrow muted">02 / PRIORITIZE</span><h2>Intelligence you can act on</h2><p class="section-description">An explainable triage score combines exploitation evidence, severity, and probability. Your exposure still matters.</p></div><a class="button subtle" href="/api/export?format=csv"><span data-icon="download"></span>Export CSV</a></div>
+      <div class="panel"><div class="table-toolbar"><label class="search"><span data-icon="search"></span><span class="sr-only">Search intelligence</span><input id="table-search" type="search" placeholder="Search all tracked intelligence…" maxlength="200"></label><label class="select-wrap"><span class="sr-only">Sort by</span><select id="sort"><option value="priority">Priority first</option><option value="newest">Newest published</option><option value="cvss">Highest CVSS</option><option value="epss">Highest EPSS</option></select></label><button class="button subtle" id="table-filters">Explore with filters</button><span class="muted" id="table-count"></span></div><div id="intelligence-table"></div><div class="table-pagination"><button class="button subtle" id="table-prev">Previous</button><span id="table-page" class="muted"></span><button class="button subtle" id="table-next">Next</button></div></div>
+      <p class="footnote">A missing metric stays unknown. “Act now” indicates CISA evidence and should be checked against the software you actually run. Export includes the full local catalog.</p>
+    </section>
+
+    <section id="view-changes" class="view" hidden>
+      <div class="section-heading"><div><span class="eyebrow muted">03 / FOLLOW THE EVIDENCE</span><h2>What changed?</h2><p class="section-description">Actual differences between saved source observations, with before-and-after values.</p></div><button class="button subtle" id="reload-changes"><span data-icon="refresh"></span>Refresh history</button></div>
+      <div class="history-note"><span data-icon="clock"></span><p id="history-baseline">History begins when your first real source observations are saved.</p></div>
+      <div id="changes-list" class="changes-list"></div><button class="button subtle" id="more-changes" hidden>Load older changes</button>
+    </section>
+
+    <section id="view-packages" class="view" hidden>
+      <div class="section-heading"><div><span class="eyebrow muted">04 / CHECK YOUR SOFTWARE</span><h2>From a package to a next step</h2><p class="section-description">Query OSV with a package and exact installed version. Inspect affected ranges and published fixes.</p></div><span class="pill"><span class="status-dot accent-bg"></span>OSV API</span></div>
+      <div class="package-layout"><section class="panel package-form-panel"><h3>Check a package</h3><p class="muted">Package name and version are sent to OSV. Query inputs are not logged by VulnOrbit; matching public advisories join your catalog.</p><form id="package-form"><label>Ecosystem<select id="package-ecosystem" required><option>npm</option><option>PyPI</option><option>Maven</option><option>Go</option><option>crates.io</option><option>NuGet</option><option>Packagist</option><option>RubyGems</option></select></label><label>Package name<input id="package-name" placeholder="Enter the exact registry name" maxlength="200" required autocomplete="off"></label><label>Installed version<input id="package-version" placeholder="Enter an exact version" maxlength="100" required autocomplete="off"></label><button type="submit" class="button primary" id="package-submit"><span data-icon="search"></span>Check published advisories</button></form><p class="footnote">No advisory match is not proof of security. Fixed releases may differ by supported branch; read the source before upgrading.</p></section><section class="panel package-results-panel"><div class="panel-heading"><h3>Matching advisories</h3><span id="package-result-count" class="pill">Not queried</span></div><div id="package-results"><div class="empty-state"><span data-icon="package"></span><h3>Start with software you use</h3><p>Your results will come directly from OSV. No example results are preloaded.</p></div></div></section></div>
+    </section>
+
+    <section id="view-sources" class="view" hidden>
+      <div class="section-heading"><div><span class="eyebrow muted">05 / TRUST &amp; PROVENANCE</span><h2>Every signal has a source</h2><p class="section-description">Last successful fetches, current coverage, and upstream failures are visible here.</p></div><a class="button subtle" href="/api/export"><span data-icon="download"></span>Export evidence JSON</a></div>
+      <div id="scheduler-status" class="history-note"></div><div id="sources-grid" class="sources-grid"></div>
+      <div class="method-grid"><article class="panel"><span class="eyebrow accent">DATA CONTRACT</span><h3>Real observations, durable history</h3><p>Imports retain source identities and observation times. SQLite saves the canonical catalog, source versions, and changes together. Raw GET responses are retained for 30 days with SHA-256 fingerprints.</p><p>A failed source preserves the last successful data and exposes its retry time. An empty or malformed KEV response cannot erase the catalog.</p></article><article class="panel"><span class="eyebrow accent">COVERAGE</span><h3>A growing, bounded catalog</h3><p>The full CISA KEV catalog anchors known exploitation. NVD begins with KEV metrics and seven days of published and modified CVEs, then follows both streams. GitHub starts with seven days of reviewed advisory updates.</p><p>Imports are paginated and resumable. EPSS rotates through tracked CVEs. CVE/CNA and OSV enrich records on investigation. This is not a claim to contain every historical vulnerability.</p></article></div>
+    </section>
+
+    <section id="view-learn" class="view" hidden>
+      <div class="section-heading"><div><span class="eyebrow muted">06 / BUILD UNDERSTANDING</span><h2>Read the signal. Understand the risk.</h2><p class="section-description">A guided walkthrough uses a real record from your current catalog. Animation explains the evidence flow.</p></div><button class="button subtle" id="tour-motion"><span data-icon="play"></span><span id="tour-motion-label">Play walkthrough</span></button></div>
+      <div class="learning-layout"><section class="panel learning-flow"><div class="panel-heading"><h3 id="learn-record">Choose a real record</h3><button class="text-button" id="learn-inspect">Investigate <span data-icon="arrow"></span></button></div><div class="flow-track" id="flow-track">
+        <button class="flow-step active" data-step="0"><span class="flow-number">01</span><span><strong>Identity</strong><small>What was disclosed?</small></span><span data-icon="fingerprint"></span></button>
+        <div class="flow-connector" aria-hidden="true"><i></i></div>
+        <button class="flow-step" data-step="1"><span class="flow-number">02</span><span><strong>Impact</strong><small>How severe could it be?</small></span><span data-icon="shield"></span></button>
+        <div class="flow-connector" aria-hidden="true"><i></i></div>
+        <button class="flow-step" data-step="2"><span class="flow-number">03</span><span><strong>Evidence</strong><small>Has exploitation occurred?</small></span><span data-icon="target"></span></button>
+        <div class="flow-connector" aria-hidden="true"><i></i></div>
+        <button class="flow-step" data-step="3"><span class="flow-number">04</span><span><strong>Response</strong><small>What should you verify next?</small></span><span data-icon="wrench"></span></button>
+      </div><p class="footnote">The moving line illustrates an investigation workflow. It does not represent observed attack traffic.</p></section><section class="panel learn-explanation" id="learn-explanation"></section></div>
+      <div class="glossary-grid"><article class="panel"><span class="pill purple-pill">CVSS</span><h3>Severity, not likelihood</h3><p>A standardized technical severity score. The vector describes the conditions behind it. Different sources or CVSS versions may disagree; inspect attribution.</p></article><article class="panel"><span class="pill blue-pill">EPSS</span><h3>Probability, not proof</h3><p>FIRST estimates the probability of exploitation in the next 30 days. The dated score is predictive; a high value is not confirmation of an attack.</p></article><article class="panel"><span class="pill coral-pill">CISA KEV</span><h3>Evidence of exploitation</h3><p>KEV inclusion confirms exploitation in the wild. It does not say that your assets are affected or that an attack is happening right now.</p></article><article class="panel"><span class="pill">EXPLOIT REFERENCES</span><h3>Evidence needs interpretation</h3><p>Source-tagged references can point to public exploit material. VulnOrbit links evidence without executing it or claiming that every reference works.</p></article></div>
+    </section>
+    <footer class="footer"><span><img src="/static/mark.svg" alt="" width="18" height="18">VulnOrbit <span class="muted">/</span> Open intelligence. Clear evidence.</span><div><span class="micro" id="footer-time">UTC · awaiting source observations</span><a href="/api/source">Download source <span data-icon="arrow"></span></a></div></footer>
+  </main>
+  <dialog id="record-dialog" aria-labelledby="record-heading"><div id="record-body"></div></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

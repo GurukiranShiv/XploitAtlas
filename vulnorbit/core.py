@@ -109,6 +109,8 @@ def priority(v: dict) -> dict:
 def merge(signals: list[dict]) -> dict:
     if not signals:
         raise ValueError("A real source observation is required.")
+    if len({s["id"] for s in signals}) != 1:
+        raise ValueError("Cannot fuse observations with different canonical identifiers.")
     ordering = {"cve": 0, "nvd": 1, "github": 2, "osv": 3, "cisa": 4, "epss": 5}
     ordered = sorted(signals, key=lambda x: (ordering.get(x["source"], 10), x.get("key", "")))
     primary = [x for x in ordered if x["source"] not in ("epss", "cisa")]
