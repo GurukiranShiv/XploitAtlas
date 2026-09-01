@@ -15,13 +15,23 @@ VulnOrbit begins with an empty database and imports actual upstream responses. I
 
 Keep the terminal window open. Imports run on the server even when the browser is closed. The first import can take several minutes; records appear as each source responds. No API key, Node installation, database service, or Python package installation is required.
 
-From a terminal inside the `vulnorbit` folder, the equivalent command is:
+The launcher automatically checks registered Python versions, then `python.exe` installations on PATH. It accepts a working Python 3.11+ interpreter only after checking that its standard library, SQLite, and TLS support load. A broken default interpreter is skipped; there is no fixed list of allowed minor versions. It uses `-E` to ignore Python-specific environment overrides for this process only, without changing system settings or your saved data.
+
+From a terminal inside the `vulnorbit` folder, you can use the same auto-detecting launcher:
 
 ```powershell
-py -3 start.py
+.\START_WINDOWS.bat
 ```
 
-If you have only the `python` command installed, use `python start.py`.
+To select a known-working interpreter manually, use `py -3.12 -E start.py`, replacing `3.12` with your installed, supported version. If you have only the `python` command installed, use `python -E start.py`.
+
+If double-clicking reports a missing `encodings` module while `py --version` still works, the selected Python installation cannot load its standard library. Use the updated launcher rather than the broken default interpreter. To check which healthy interpreter it selects without starting the server:
+
+```powershell
+.\START_WINDOWS.bat --check-python
+```
+
+For an existing installation, [download the launcher-only update](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/raw/refs/heads/codex/vulnorbit-live-universe/vulnorbit-windows-launcher.zip), extract it, and replace only `START_WINDOWS.bat` beside `start.py`. Leave `runtime/` and any local CSS edits untouched. Stop an already-running copy with Ctrl+C before testing the launcher so that the port is available.
 
 ## Start on Linux or macOS
 
@@ -131,7 +141,7 @@ Python reads the process environment, not a `.env` file. In PowerShell, set opti
 
 ```powershell
 $env:NVD_API_KEY = "your-key"
-py -3 start.py
+.\START_WINDOWS.bat
 ```
 
 For Docker Compose, copy `.env.example` to `.env` if optional credentials are needed. `.env` is excluded from Git, Docker build context, and source downloads.

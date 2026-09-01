@@ -2,9 +2,9 @@ name: VulnOrbit validation
 on:
   push:
     branches: [codex/vulnorbit-live-universe, main]
-    paths: ["vulnorbit/**", "vulnorbit-source.zip", ".github/workflows/vulnorbit.yml"]
+    paths: ["vulnorbit/**", "vulnorbit-source.zip", "vulnorbit-windows-launcher.zip", ".github/workflows/vulnorbit.yml"]
   pull_request:
-    paths: ["vulnorbit/**", "vulnorbit-source.zip", ".github/workflows/vulnorbit.yml"]
+    paths: ["vulnorbit/**", "vulnorbit-source.zip", "vulnorbit-windows-launcher.zip", ".github/workflows/vulnorbit.yml"]
   workflow_dispatch:
 permissions:
   contents: read
@@ -40,3 +40,63 @@ jobs:
         run: python3 -m unittest discover -s tests -p test_live.py -v
       - name: Verify standalone download matches source
         run: python3 tests/verify_archive.py ../vulnorbit-source.zip
+  windows-launcher:
+    runs-on: windows-2025
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.12', '3.13', '3.14']
+    defaults:
+      run:
+        working-directory: vulnorbit
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Check the selected Python version supports the application
+        run: |
+          python -E -c "import sys, encodings, sqlite3, ssl; print(sys.version); assert sys.version_info >= (3, 11)"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -E start.py --help
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -E -m unittest discover -s tests -p test_core.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Check automatic Python selection with invalid Python environment overrides
+        run: |
+          $env:PYTHONHOME = Join-Path $env:RUNNER_TEMP 'vulnorbit-missing-python-home'
+          $env:PYTHONPATH = Join-Path $env:RUNNER_TEMP 'vulnorbit-missing-python-path'
+          & .\START_WINDOWS.bat --check-python
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & .\START_WINDOWS.bat --help
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if (Test-Path .\runtime) { throw 'Diagnostic commands must not create runtime data.' }
+      - name: Check launching from a different directory with spaces
+        run: |
+          $launchTestDir = Join-Path $env:RUNNER_TEMP 'VulnOrbit launcher test (spaces)!'
+          New-Item -ItemType Directory -Path $launchTestDir | Out-Null
+          Copy-Item .\*.py -Destination $launchTestDir
+          Copy-Item .\START_WINDOWS.bat -Destination $launchTestDir
+          & "$launchTestDir\START_WINDOWS.bat" --check-python
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & "$launchTestDir\START_WINDOWS.bat" --help
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if (Test-Path "$launchTestDir\runtime") { throw 'Diagnostic commands must not create runtime data.' }
+      - name: Check missing-project diagnostics and launcher-only download
+        run: |
+          $launcherOnlyDir = Join-Path $env:RUNNER_TEMP 'VulnOrbit launcher only'
+          Expand-Archive ..\vulnorbit-windows-launcher.zip -DestinationPath $launcherOnlyDir
+          $launcherFiles = @(Get-ChildItem $launcherOnlyDir -Recurse -File)
+          if ($launcherFiles.Count -ne 1 -or $launcherFiles[0].Name -ne 'START_WINDOWS.bat') {
+            throw 'The launcher update must contain only START_WINDOWS.bat.'
+          }
+          if ((Get-FileHash .\START_WINDOWS.bat).Hash -ne (Get-FileHash $launcherFiles[0].FullName).Hash) {
+            throw 'Launcher-only download differs from the source file.'
+          }
+          & "$launcherOnlyDir\START_WINDOWS.bat" --check-python
+          if ($LASTEXITCODE -ne 1) { throw 'Missing start.py must produce a noninteractive error.' }
+          exit 0
