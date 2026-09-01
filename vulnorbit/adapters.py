@@ -81,7 +81,9 @@ def github(data, observed, url):
                              "ecosystem": text(p.get("package", {}).get("ecosystem"), 80),
                              "affected": text(p.get("vulnerable_version_range"), 1000),
                              "fixed": text(patch, 300) or None, "source": "github", "url": g["html_url"]})
-        metric = (g.get("cvss_severities") or {}).get("cvss_v4") or g.get("cvss") or {}
+        metric_options = [(g.get("cvss_severities") or {}).get("cvss_v4") or {},
+                          (g.get("cvss_severities") or {}).get("cvss_v3") or {}, g.get("cvss") or {}]
+        metric = next((m for m in metric_options if number(m.get("score")) is not None), {})
         r.update(title=text(g.get("summary"), 500), description=text(g.get("description")),
                  published=timestamp(g.get("published_at")), modified=timestamp(g.get("updated_at")),
                  cvss=number(metric.get("score")), vector=text(metric.get("vector_string")) or None,
@@ -164,6 +166,7 @@ def osv(data, observed, url):
     r.update(title=text(data.get("summary"), 500), description=text(data.get("details")),
              published=timestamp(data.get("published")), modified=timestamp(data.get("modified")),
              aliases=array(data.get("aliases")) + [data["id"]], withdrawn=bool(data.get("withdrawn")),
+             vendor=packages[0]["ecosystem"] if packages else "", product=packages[0]["name"] if packages else "",
              packages=packages[:50], references=[r for x in array(data.get("references"))
                  for r in refs(x.get("url"), "patch" if x.get("type") == "FIX" else
                                "advisory" if x.get("type") == "ADVISORY" else "reference", "osv")][:40])
