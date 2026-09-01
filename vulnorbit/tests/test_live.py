@@ -36,7 +36,7 @@ class LiveTests(unittest.TestCase):
         print("\nREAL-SOURCE VALIDATION:", json.dumps({
             "records": len(cls.records),
             "sources": {key: {"state": value["state"], "count": value["count"], "lastSuccess": value["lastSuccess"]}
-                        for key, value in cls.statuses.items()}), flush=True)
+                        for key, value in cls.statuses.items()}}), flush=True)
         cls.cisa = [s for r in cls.records for s in cls.store.signals(r["id"]) if s["source"] == "cisa"]
         cls.httpd = Server(("127.0.0.1", 0), cls.store, cls.ingestor, {"127.0.0.1", "localhost"})
         cls.thread = threading.Thread(target=cls.httpd.serve_forever, daemon=True)
