@@ -1,6 +1,6 @@
 # Security boundaries
 
-VulnOrbit retrieves public vulnerability intelligence. It does not execute exploit references. Package checks send the entered ecosystem, package name, and exact version to OSV; matching public advisory records are retained. Query bodies and credentials are excluded from request logs and raw-response captures.
+XploitAtlas retrieves public vulnerability intelligence. It does not execute exploit references. Package checks send the entered ecosystem, package name, and exact version to OSV; matching public advisory records are retained. Query bodies and credentials are excluded from request logs and raw-response captures.
 
 The default service listens on 127.0.0.1. It has no built-in multi-user authentication. Use an authenticated TLS reverse proxy and restrict accepted hostnames before making it available beyond a trusted local environment. The standard-library HTTP server is not an internet edge server.
 

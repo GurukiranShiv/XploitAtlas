@@ -72,7 +72,7 @@ async function loadCatalog() {
     $('#connection-title').textContent='Catalog unavailable';$('#connection-detail').textContent='Check that the Python server is running';
     $('#connection-dot').className='status-dot error';
     notice(error.message+' Your last loaded observations remain on screen.');
-    if(!state.data)$('#canvas-empty').innerHTML=empty('The catalog is not connected','Start the VulnOrbit Python server, then reload this page.');
+    if(!state.data)$('#canvas-empty').innerHTML=empty('The catalog is not connected','Start the XploitAtlas Python server, then reload this page.');
   } finally {schedulePoll();}
 }
 function schedulePoll() {
@@ -256,7 +256,7 @@ function renderDetailTab() {
   } else if(state.detailTab==='evidence') {
     $('#detail-content').innerHTML='<h3>Source observations</h3><p class="footnote">Each source keeps its own timestamp and score. Canonical CVSS prefers CVE/CNA, then NVD, then GitHub. Source disagreement is preserved.</p>'+
       r.sources.map(s=>'<article class="source-evidence"><h4>'+esc(sourceNames[s.id]||s.id)+(typeof s.cvss==='number'?'<span class="pill">CVSS '+metric(s.cvss)+'</span>':'')+(s.withdrawn?'<span class="pill amber-pill">Withdrawn</span>':'')+'</h4><p>Observed '+date(s.observedAt,true)+' · Source updated '+date(s.modified,true)+' · '+esc(s.key)+'</p>'+link(s.url,'Open source record ↗')+'</article>').join('')+
-      '<section class="detail-section"><h3>Vendor advisories, patches & exploit evidence</h3><p class="footnote">An “exploit” label comes from a publisher’s reference tag. VulnOrbit does not execute references or independently validate exploit reliability.</p>'+
+      '<section class="detail-section"><h3>Vendor advisories, patches & exploit evidence</h3><p class="footnote">An “exploit” label comes from a publisher’s reference tag. XploitAtlas does not execute references or independently validate exploit reliability.</p>'+
       (r.references?.length?r.references.map(ref=>'<div class="reference-row"><span class="pill '+(ref.kind==='exploit'?'coral-pill':ref.kind==='patch'?'lime-pill':'')+'">'+esc(ref.kind)+'</span><div>'+link(ref.url,ref.url)+'<small>Attributed to '+esc(sourceNames[ref.source]||ref.source)+'</small></div></div>').join(''):empty('No references supplied','The saved source observations do not contain reference links.'))+'</section>';
   } else if(state.detailTab==='packages') {
     $('#detail-content').innerHTML='<h3>Affected software & published fixes</h3><p class="footnote">Ranges are preserved from publishers. OSV range events can describe several release branches; there may be more than one fixed version. A missing fixed release is unknown, not a claim that no patch exists.</p>'+packageEvidence(r.packages);

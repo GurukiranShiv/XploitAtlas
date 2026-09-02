@@ -1,6 +1,6 @@
 # Frontend screenshot provenance
 
-These are unmodified PNG captures supplied by the project owner from a running local VulnOrbit application. They show the application's frontend, not design mockups or generated screenshots.
+These are unmodified PNG captures supplied by the project owner from a running local application, now named XploitAtlas. They were captured before the rename and retain the former VulnOrbit branding. They show the application's frontend, not design mockups or generated screenshots.
 
 | File | Visible view | Capture context |
 | --- | --- | --- |

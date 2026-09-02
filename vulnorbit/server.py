@@ -46,7 +46,7 @@ class Server(ThreadingHTTPServer):
 
 class Handler(BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.1"
-    server_version = "VulnOrbit"
+    server_version = "XploitAtlas"
     sys_version = ""
 
     def setup(self):
@@ -264,7 +264,7 @@ class Handler(BaseHTTPRequestHandler):
             self.json(500, {"error": "The request failed. Existing intelligence is retained."})
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="VulnOrbit: real-source vulnerability intelligence.")
+    parser = argparse.ArgumentParser(description="XploitAtlas: real-source vulnerability intelligence.")
     parser.add_argument("--host", default=os.getenv("VULNORBIT_HOST", "127.0.0.1"))
     parser.add_argument("--port", type=int, default=int(os.getenv("VULNORBIT_PORT", "8787")))
     parser.add_argument("--data-dir", default=os.getenv("VULNORBIT_DATA_DIR", str(ROOT / "runtime")))
@@ -289,12 +289,12 @@ def main(argv=None):
     server = Server((args.host, args.port), store, ingestor, allowed)
     if not args.no_sync:
         ingestor.start()
-    print("\nVulnOrbit is running: http://127.0.0.1:" + str(args.port))
+    print("\nXploitAtlas is running: http://127.0.0.1:" + str(args.port))
     print("Real sources only. Initial imports may take several minutes. Keep this process running for automatic updates.\n")
     try:
         server.serve_forever(poll_interval=0.5)
     except KeyboardInterrupt:
-        print("\nStopping VulnOrbit.")
+        print("\nStopping XploitAtlas.")
     finally:
         server.server_close()
         ingestor.close()

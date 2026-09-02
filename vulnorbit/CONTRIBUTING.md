@@ -1,4 +1,4 @@
-# Contributing to VulnOrbit
+# Contributing to XploitAtlas
 
 Keep the real-source contract intact. A missing response is unknown; an import failure is a visible failure. Do not seed the runtime database with example vulnerabilities, invent scores, label public exploit references as verified executions, or derive event history that was never observed.
 

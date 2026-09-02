@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {escapeHTML,link,metric,percent,recordTable} from '../static/ui.js';
 import {layoutRecords} from '../static/universe.js';
 test('source text cannot become HTML',()=>{
@@ -19,4 +20,17 @@ test('missing metrics stay unknown and zero remains zero',()=>{
 test('an empty catalog cannot generate visual records',()=>{
   assert.deepEqual(layoutRecords([]),[]);
   assert.ok(recordTable([]).includes('No matching observations'));
+});
+test('the interface and setup guide use the approved XploitAtlas branding',()=>{
+  const html=readFileSync(new URL('../static/index.html',import.meta.url),'utf8');
+  const readme=readFileSync(new URL('../README.md',import.meta.url),'utf8');
+  const wording='Helping you understand vulnerabilities, why they matter, and what to prioritize.';
+  assert.ok(html.includes('<title>XploitAtlas — Vulnerability intelligence</title>'));
+  assert.ok(html.includes('aria-label="XploitAtlas home"'));
+  assert.ok(html.includes('Xploit<span class="accent">Atlas</span>'));
+  assert.ok(html.includes('<h1>Xploit<span>Atlas</span></h1>'));
+  assert.ok(html.includes(wording));
+  assert.ok(readme.startsWith('# XploitAtlas\n'));
+  assert.ok(readme.includes(wording));
+  assert.ok(!html.includes('VulnOrbit'));
 });

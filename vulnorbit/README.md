@@ -1,10 +1,16 @@
-# VulnOrbit
+# XploitAtlas
 
-**Real vulnerability intelligence, in perspective.** An open-source vulnerability observatory that combines authoritative source observations with an animated, interactive 3D universe.
+**Helping you understand vulnerabilities, why they matter, and what to prioritize.**
+
+An open-source vulnerability observatory that combines authoritative source observations with an animated, interactive 3D universe.
 
 [Download the standalone project](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/raw/refs/heads/codex/vulnorbit-live-universe/vulnorbit-source.zip) · [Validation runs](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/actions/workflows/vulnorbit.yml?query=branch%3Acodex%2Fvulnorbit-live-universe) · [MIT license](LICENSE)
 
-VulnOrbit begins with an empty database and imports actual upstream responses. It includes no seeded vulnerabilities, fabricated metrics, simulated attacks, sample package results, or invented history. Provider outages remain visible; previous observations remain available.
+XploitAtlas begins with an empty database and imports actual upstream responses. It includes no seeded vulnerabilities, fabricated metrics, simulated attacks, sample package results, or invented history. Provider outages remain visible; previous observations remain available.
+
+### Compatibility with existing installations
+
+XploitAtlas was previously named VulnOrbit. This is a branding update, not a data migration. The `vulnorbit/` folder, archive filenames, `VULNORBIT_*` settings, `runtime/vulnorbit.sqlite3`, `X-VulnOrbit-Client` header, and `vulnorbit-1` scoring-model identifier retain their existing names. Existing launch commands and saved observations continue to work. The original license attribution is preserved.
 
 ## Start on Windows
 
@@ -80,7 +86,7 @@ The scheduler defaults to a 15-minute interval after each completed cycle; the m
 
 **Coverage is explicit.** This is a growing local catalog, not a complete historical mirror of every CVE. Sources reports the imported windows, page progress, last successful fetch, latest attempt, errors, and retry times. Dashboard statistics describe the local catalog. The canvas renders up to 4,500 matching records; its count discloses that limit, while the paginated table can access the entire local result set.
 
-Vendor advisories and exploit evidence are linked from publisher records and source-tagged references. VulnOrbit does not independently verify exploit reliability or execute exploit material.
+Vendor advisories and exploit evidence are linked from publisher records and source-tagged references. XploitAtlas does not independently verify exploit reliability or execute exploit material.
 
 ## How to read the universe
 
@@ -205,7 +211,7 @@ The repository workflow runs syntax, boundary, JavaScript, and real-source integ
 | `static/app.js` / `static/ui.js` | Evidence, tables, source health, packages and learning |
 | `static/style.css` | Responsive interface, accessible focus and motion preferences |
 
-This directory is self-contained and can become its own repository. The older scanner application and sample files elsewhere in the parent repository are not read or imported by VulnOrbit.
+This directory is self-contained and can become its own repository. The older scanner application and sample files elsewhere in the parent repository are not read or imported by XploitAtlas.
 
 ## License
 

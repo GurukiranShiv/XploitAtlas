@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0a0d12">
-  <meta name="description" content="VulnOrbit is an open-source observatory for real vulnerability intelligence, exploitation evidence, package advisories, and remediation.">
-  <title>VulnOrbit — Vulnerability intelligence, in perspective</title>
+  <meta name="description" content="XploitAtlas helps you understand vulnerabilities, why they matter, and what to prioritize with real-source intelligence and an interactive 3D universe.">
+  <title>XploitAtlas — Vulnerability intelligence</title>
   <link rel="icon" type="image/svg+xml" href="/static/mark.svg">
   <link rel="stylesheet" href="/static/style.css">
   <script type="module" src="/static/app.js"></script>
@@ -13,7 +13,7 @@
 <body>
   <a class="skip-link" href="#main">Skip to intelligence</a>
   <header class="topbar">
-    <a class="brand" href="#universe" aria-label="VulnOrbit home"><img src="/static/mark.svg" alt="" width="36" height="36"><span>Vuln<span class="accent">Orbit</span><small>OPEN INTELLIGENCE</small></span></a>
+    <a class="brand" href="#universe" aria-label="XploitAtlas home"><img src="/static/mark.svg" alt="" width="36" height="36"><span>Xploit<span class="accent">Atlas</span><small>OPEN INTELLIGENCE</small></span></a>
     <nav class="nav" aria-label="Main navigation">
       <button type="button" data-view="universe" class="nav-link active" aria-current="page">Universe</button>
       <button type="button" data-view="intelligence" class="nav-link">Intelligence</button>
@@ -27,8 +27,8 @@
   <main id="main" class="shell">
     <section class="intro">
       <div><div class="eyebrow"><span class="tiny-orbit"></span> VULNERABILITY OBSERVATORY <span class="eyebrow-divider">/</span> <span id="today"></span></div>
-      <h1>Intelligence. <span>In perspective.</span></h1>
-      <p>Connect the evidence. Understand the impact. Find what matters next.</p></div>
+      <h1>Xploit<span>Atlas</span></h1>
+      <p>Helping you understand vulnerabilities, why they matter, and what to prioritize.</p></div>
       <div class="connection"><span id="connection-dot" class="status-dot pending"></span><div><strong id="connection-title">Connecting to your catalog</strong><small id="connection-detail">Real sources · no generated records</small></div></div>
     </section>
     <div id="global-notice" class="notice" role="status" hidden></div>
@@ -76,7 +76,7 @@
 
     <section id="view-packages" class="view" hidden>
       <div class="section-heading"><div><span class="eyebrow muted">04 / CHECK YOUR SOFTWARE</span><h2>From a package to a next step</h2><p class="section-description">Query OSV with a package and exact installed version. Inspect affected ranges and published fixes.</p></div><span class="pill"><span class="status-dot accent-bg"></span>OSV API</span></div>
-      <div class="package-layout"><section class="panel package-form-panel"><h3>Check a package</h3><p class="muted">Package name and version are sent to OSV. Query inputs are not logged by VulnOrbit; matching public advisories join your catalog.</p><form id="package-form"><label>Ecosystem<select id="package-ecosystem" required><option>npm</option><option>PyPI</option><option>Maven</option><option>Go</option><option>crates.io</option><option>NuGet</option><option>Packagist</option><option>RubyGems</option></select></label><label>Package name<input id="package-name" placeholder="Enter the exact registry name" maxlength="200" required autocomplete="off"></label><label>Installed version<input id="package-version" placeholder="Enter an exact version" maxlength="100" required autocomplete="off"></label><button type="submit" class="button primary" id="package-submit"><span data-icon="search"></span>Check published advisories</button></form><p class="footnote">No advisory match is not proof of security. Fixed releases may differ by supported branch; read the source before upgrading.</p></section><section class="panel package-results-panel"><div class="panel-heading"><h3>Matching advisories</h3><span id="package-result-count" class="pill">Not queried</span></div><div id="package-results"><div class="empty-state"><span data-icon="package"></span><h3>Start with software you use</h3><p>Your results will come directly from OSV. No example results are preloaded.</p></div></div></section></div>
+      <div class="package-layout"><section class="panel package-form-panel"><h3>Check a package</h3><p class="muted">Package name and version are sent to OSV. Query inputs are not logged by XploitAtlas; matching public advisories join your catalog.</p><form id="package-form"><label>Ecosystem<select id="package-ecosystem" required><option>npm</option><option>PyPI</option><option>Maven</option><option>Go</option><option>crates.io</option><option>NuGet</option><option>Packagist</option><option>RubyGems</option></select></label><label>Package name<input id="package-name" placeholder="Enter the exact registry name" maxlength="200" required autocomplete="off"></label><label>Installed version<input id="package-version" placeholder="Enter an exact version" maxlength="100" required autocomplete="off"></label><button type="submit" class="button primary" id="package-submit"><span data-icon="search"></span>Check published advisories</button></form><p class="footnote">No advisory match is not proof of security. Fixed releases may differ by supported branch; read the source before upgrading.</p></section><section class="panel package-results-panel"><div class="panel-heading"><h3>Matching advisories</h3><span id="package-result-count" class="pill">Not queried</span></div><div id="package-results"><div class="empty-state"><span data-icon="package"></span><h3>Start with software you use</h3><p>Your results will come directly from OSV. No example results are preloaded.</p></div></div></section></div>
     </section>
 
     <section id="view-sources" class="view" hidden>
@@ -96,9 +96,9 @@
         <div class="flow-connector" aria-hidden="true"><i></i></div>
         <button class="flow-step" data-step="3"><span class="flow-number">04</span><span><strong>Response</strong><small>What should you verify next?</small></span><span data-icon="wrench"></span></button>
       </div><p class="footnote">The moving line illustrates an investigation workflow. It does not represent observed attack traffic.</p></section><section class="panel learn-explanation" id="learn-explanation"></section></div>
-      <div class="glossary-grid"><article class="panel"><span class="pill purple-pill">CVSS</span><h3>Severity, not likelihood</h3><p>A standardized technical severity score. The vector describes the conditions behind it. Different sources or CVSS versions may disagree; inspect attribution.</p></article><article class="panel"><span class="pill blue-pill">EPSS</span><h3>Probability, not proof</h3><p>FIRST estimates the probability of exploitation in the next 30 days. The dated score is predictive; a high value is not confirmation of an attack.</p></article><article class="panel"><span class="pill coral-pill">CISA KEV</span><h3>Evidence of exploitation</h3><p>KEV inclusion confirms exploitation in the wild. It does not say that your assets are affected or that an attack is happening right now.</p></article><article class="panel"><span class="pill">EXPLOIT REFERENCES</span><h3>Evidence needs interpretation</h3><p>Source-tagged references can point to public exploit material. VulnOrbit links evidence without executing it or claiming that every reference works.</p></article></div>
+      <div class="glossary-grid"><article class="panel"><span class="pill purple-pill">CVSS</span><h3>Severity, not likelihood</h3><p>A standardized technical severity score. The vector describes the conditions behind it. Different sources or CVSS versions may disagree; inspect attribution.</p></article><article class="panel"><span class="pill blue-pill">EPSS</span><h3>Probability, not proof</h3><p>FIRST estimates the probability of exploitation in the next 30 days. The dated score is predictive; a high value is not confirmation of an attack.</p></article><article class="panel"><span class="pill coral-pill">CISA KEV</span><h3>Evidence of exploitation</h3><p>KEV inclusion confirms exploitation in the wild. It does not say that your assets are affected or that an attack is happening right now.</p></article><article class="panel"><span class="pill">EXPLOIT REFERENCES</span><h3>Evidence needs interpretation</h3><p>Source-tagged references can point to public exploit material. XploitAtlas links evidence without executing it or claiming that every reference works.</p></article></div>
     </section>
-    <footer class="footer"><span><img src="/static/mark.svg" alt="" width="18" height="18">VulnOrbit <span class="muted">/</span> Open intelligence. Clear evidence.</span><div><span class="micro" id="footer-time">UTC · awaiting source observations</span><a href="/api/source">Download source <span data-icon="arrow"></span></a></div></footer>
+    <footer class="footer"><span><img src="/static/mark.svg" alt="" width="18" height="18">XploitAtlas <span class="muted">/</span> Open-source vulnerability intelligence.</span><div><span class="micro" id="footer-time">UTC · awaiting source observations</span><a href="/api/source">Download source <span data-icon="arrow"></span></a></div></footer>
   </main>
   <dialog id="record-dialog" aria-labelledby="record-heading"><div id="record-body"></div></dialog>
   <div id="toast" class="toast" role="status" hidden></div>

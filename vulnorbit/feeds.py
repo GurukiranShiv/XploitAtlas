@@ -52,7 +52,7 @@ class Client:
         p = urllib.parse.urlsplit(url)
         if p.scheme != "https" or p.hostname not in HOSTS or p.username or p.password:
             raise FeedError("Unsupported source address.")
-        headers = {"Accept": "application/json", "User-Agent": "VulnOrbit/1.0 (open-source vulnerability observatory)"}
+        headers = {"Accept": "application/json", "User-Agent": "XploitAtlas/1.0 (open-source vulnerability observatory)"}
         if p.hostname == "services.nvd.nist.gov" and self.nvd_key:
             headers["apiKey"] = self.nvd_key
         if p.hostname == "api.github.com" and self.github_token:

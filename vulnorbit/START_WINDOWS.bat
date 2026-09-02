@@ -26,7 +26,7 @@ if not "%errorlevel%"=="0" goto :python_missing
 if /i "%~1"=="--check-python" exit /b 0
 
 echo.
-echo Starting VulnOrbit. Default address: http://127.0.0.1:8787
+echo Starting XploitAtlas. Default address: http://127.0.0.1:8787
 echo Open the address printed by the server in your browser.
 echo Keep this window open for real-source updates. Press Ctrl+C to stop.
 echo.
@@ -34,13 +34,13 @@ echo.
 set "VULNORBIT_EXIT_CODE=%errorlevel%"
 if "%VULNORBIT_EXIT_CODE%"=="0" exit /b 0
 echo.
-echo VulnOrbit stopped with an error. Read the message above.
-echo If the port is already in use, close the other VulnOrbit process first.
+echo XploitAtlas stopped with an error. Read the message above.
+echo If the port is already in use, close the other XploitAtlas process first.
 if "%~1"=="" pause
 exit /b %VULNORBIT_EXIT_CODE%
 
 :folder_error
-echo ERROR: The VulnOrbit folder could not be opened.
+echo ERROR: The XploitAtlas folder could not be opened.
 goto :failed
 
 :missing_start
