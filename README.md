@@ -1,397 +1,90 @@
-# Exploit-Aware Vulnerability Prioritization Platform
+![VulnOrbit 3D vulnerability universe with vendor constellations and the known-exploitation radar](docs/screenshots/vulnorbit/01-universe.png)
 
-A SOC-focused vulnerability-management project that ranks scanner findings using **CVSS + EPSS + CISA KEV + exploit maturity + asset exposure + business criticality**.
+# VulnOrbit
 
-This project goes beyond normal vulnerability scanning. Instead of prioritizing only by CVSS, it ranks vulnerabilities based on real-world exploitation likelihood, known exploitation, asset exposure, and business impact.
+**Real vulnerability intelligence, in perspective.**
 
----
+Explore published vulnerabilities in an animated, interactive 3D universe. Connect severity, exploitation evidence, package advisories, source updates, and remediation information to understand what changed and what deserves attention.
 
-## Features
+[Download VulnOrbit](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/raw/refs/heads/codex/vulnorbit-live-universe/vulnorbit-source.zip) · [Project source](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/tree/codex/vulnorbit-live-universe/vulnorbit) · [Setup guide](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/README.md)
 
-- FastAPI backend with Swagger API documentation
-- SQLite for local execution
-- PostgreSQL support through Docker Compose
-- Asset inventory with exposure and business criticality
-- Scanner finding ingestion from:
-  - Nuclei JSONL
-  - OpenVAS / GVM CSV
-- Threat-intelligence enrichment from:
-  - FIRST EPSS public API
-  - CISA Known Exploited Vulnerabilities catalog
-- Explainable risk scoring model
-- Remediation SLA recommendation
-- Frontend dashboard for SOC-style visibility
-- Sample scanner findings for portfolio and interview walkthroughs
+VulnOrbit's runnable source currently lives on the `codex/vulnorbit-live-universe` branch. This README showcases that standalone application; the repository's earlier scanner prototype is separate.
 
----
+## 01 / The 3D vulnerability universe
 
-## Project Screenshots / Proof of Execution
+The opening screenshot shows the running application: imported records form vendor constellations, with a known-exploitation radar alongside the universe. Drag to orbit, zoom, filter by severity or KEV status, and select a record to investigate its evidence.
 
-### 1. Backend Running Successfully
+The universe is animated inside the app. The README contains static captures, not an embedded interactive viewer.
 
-![Backend Running](assets/01-backend-running.png.png)
+## 02 / Catalog overview and source health
 
----
+![VulnOrbit catalog totals, known-exploited records, critical severity, recent publications, and source health](docs/screenshots/vulnorbit/02-source-health.png)
 
-### 2. FastAPI Swagger API
+See the state of the imported catalog at a glance: tracked vulnerabilities, known-exploited records, critical severity, and recent publications. Source cards expose successful fetches, observation counts, and the next scheduled update so freshness and coverage stay visible.
 
-![FastAPI Swagger API](assets/02-fastapi-swagger.png)
+## 03 / Coverage and provenance
 
----
+![VulnOrbit source coverage, last successful fetches, import progress, and data-provenance notes](docs/screenshots/vulnorbit/03-provenance-coverage.png)
 
-### 3. Sample Scanner Findings Loaded
+Check which feeds supplied evidence, when they responded, and where imports are still catching up. Published source records, observation history, and resumable imports make the catalog's coverage and remaining import progress explicit.
 
-![Sample Scanner Findings Loaded](assets/03-sample-data-loaded.png)
+## 04 / Package advisory lookup
 
----
+![VulnOrbit package lookup form with ecosystem, registry name, exact installed version, and a not-yet-queried results panel](docs/screenshots/vulnorbit/04-package-lookup.png)
 
-### 4. Ranked Findings API Output
+Query a package by ecosystem, exact registry name, and installed version. Matching public advisories come from OSV, with affected ranges and published fixed versions where the source supplies them.
 
-![Ranked Findings API Output 1](assets/04-ranked-findings-api1.png)
+*This capture shows the form before submission, not a package finding. Results are retrieved when a query is submitted; no example findings are preloaded.*
 
-![Ranked Findings API Output 2](assets/04-ranked-findings-api2.png)
+All four images are actual frontend captures supplied from a local run on 1 September 2026. Counts and timestamps are snapshots from different moments during ingestion, not live figures or benchmark claims. [Screenshot provenance](docs/screenshots/vulnorbit/SOURCES.md).
 
----
+## Explore, investigate, and learn
 
-### 5. Dashboard Statistics API
+| View | What you can do |
+| --- | --- |
+| **Universe** | Orbit vendor constellations, filter real records, and focus on known-exploited vulnerabilities. |
+| **Intelligence** | Search and sort the catalog, inspect source-attributed evidence, and review explainable priorities. |
+| **Changes** | Compare newly observed records and field-level changes between stored source versions. |
+| **Packages** | Look up an exact package/version and inspect matching advisories and published fixes. |
+| **Sources** | Review feed health, observation times, import coverage, and upstream failures. |
+| **Learn** | Follow an animated investigation walkthrough using a real record selected from the catalog. |
 
-![Stats API Output 1](assets/05-stats-api1.png)
+Keyboard navigation, pause controls, reduced-motion support, and the record table keep the interface usable beyond the 3D view.
 
-![Stats API Output 2](assets/05-stats-api2.png)
+## Real sources, clearly attributed
 
----
+| Source | Evidence contributed |
+| --- | --- |
+| [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) | Known exploitation, catalog dates, ransomware-use indicators, and required remediation actions. |
+| [NVD](https://nvd.nist.gov/) | CVE descriptions, severity, weakness identifiers, affected-product context, and reference links. |
+| [FIRST EPSS](https://www.first.org/epss/) | Dated exploitation-probability estimates and percentiles. |
+| [GitHub Advisory Database](https://github.com/advisories) | Reviewed package advisories, aliases, affected ranges, and first patched releases. |
+| [CVE / CNA](https://www.cve.org/) | Publisher records, vendor references, affected products, and record status. |
+| [OSV](https://osv.dev/) | Package/version matching, advisory details, and fixed-version evidence. |
 
-### 6. Frontend Dashboard Overview
+VulnOrbit begins with an empty catalog and imports actual public-source responses. Collected observations are stored locally and refreshed while the application is running. Scheduled feeds update automatically; CVE/CNA and OSV also enrich records on demand. A source failure preserves the last successful observations and exposes the error.
 
-![Frontend Dashboard Overview](assets/06-dashboard-overview.png)
+The earlier scanner prototype's sample fixtures are not used to populate VulnOrbit.
 
----
+### Read the evidence correctly
 
-### 7. Ranked Remediation Queue
+- The 3D positions and animation are a visual layout, not geographic attack locations or live attack telemetry.
+- KEV inclusion means reported exploitation in the wild, not proof that your own device is compromised.
+- EPSS is a prediction. VulnOrbit's priority score is an explainable heuristic, not a calibrated probability.
+- Missing scores remain unknown; no matching package advisory is not proof of security.
+- Vendor advisories and exploit references are linked as evidence. The app does not execute exploits.
 
-![Ranked Findings Table](assets/07-ranked-findings-table.png)
+## Run it locally
 
----
+1. [Download the standalone project](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/raw/refs/heads/codex/vulnorbit-live-universe/vulnorbit-source.zip) and extract it.
+2. Use a working Python **3.11 or newer** installation.
+3. On Windows, open the extracted `vulnorbit` folder and double-click **START_WINDOWS.bat**. The launcher checks installed interpreters and skips broken or unsupported ones.
+4. Open [http://127.0.0.1:8787](http://127.0.0.1:8787) in your browser.
 
-### 8. Score Preview
+Keep the application process running for automatic updates. Initial imports can take several minutes. No third-party Python packages, Node.js installation, or external database service are needed to run VulnOrbit.
 
-![Score Preview](assets/08-score-preview.png)
+See the [setup and development guide](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/README.md) for Linux/macOS, Docker, configuration, and contribution instructions.
 
----
+## Open source
 
-## Project Structure
-
-```text
-exploit-aware-vuln-prioritizer/
-├── assets/
-│   ├── 01-backend-running.png.png
-│   ├── 02-fastapi-swagger.png
-│   ├── 03-sample-data-loaded.png
-│   ├── 04-ranked-findings-api1.png
-│   ├── 04-ranked-findings-api2.png
-│   ├── 05-stats-api1.png
-│   ├── 05-stats-api2.png
-│   ├── 06-dashboard-overview.png
-│   ├── 07-ranked-findings-table.png
-│   └── 08-score-preview.png
-├── backend/
-│   ├── app/
-│   │   ├── main.py
-│   │   ├── models.py
-│   │   ├── schemas.py
-│   │   ├── scoring.py
-│   │   ├── enrichment.py
-│   │   ├── importers.py
-│   │   └── database.py
-│   ├── requirements.txt
-│   └── Dockerfile
-├── frontend/
-│   ├── index.html
-│   ├── styles.css
-│   └── app.js
-├── data/
-│   ├── sample_nuclei.jsonl
-│   └── sample_openvas.csv
-├── docs/
-│   ├── architecture.md
-│   └── interview_explanation.md
-├── scripts/
-│   ├── run_local.ps1
-│   └── run_local.sh
-├── tests/
-│   └── test_scoring.py
-├── docker-compose.yml
-├── .env.example
-├── .gitignore
-└── README.md
-```
-
----
-
-## How the Project Works
-
-The platform takes vulnerability findings from scanner outputs or manual API input, enriches the CVEs with external threat intelligence, calculates an explainable risk score, and produces a ranked remediation queue.
-
-```text
-Scanner Output / Manual Finding
-        ↓
-Normalize CVE and Asset Data
-        ↓
-Enrich with EPSS + CISA KEV
-        ↓
-Calculate Exploit-Aware Risk Score
-        ↓
-Assign Severity and Remediation SLA
-        ↓
-Display Ranked Findings in API and Dashboard
-```
-
----
-
-## Input Sources
-
-### 1. Nuclei JSONL
-
-The platform can import Nuclei JSONL output through:
-
-```text
-POST /import/nuclei
-```
-
-Sample file included:
-
-```text
-data/sample_nuclei.jsonl
-```
-
----
-
-### 2. OpenVAS / GVM CSV
-
-The platform can import OpenVAS/GVM CSV reports through:
-
-```text
-POST /import/openvas
-```
-
-Sample file included:
-
-```text
-data/sample_openvas.csv
-```
-
----
-
-### 3. Manual Finding Creation
-
-Analysts can manually create a finding through:
-
-```text
-POST /findings
-```
-
----
-
-### 4. EPSS Enrichment
-
-The platform uses EPSS to estimate the probability that a vulnerability may be exploited in the wild.
-
----
-
-### 5. CISA KEV Enrichment
-
-The platform checks whether a CVE is listed in the CISA Known Exploited Vulnerabilities catalog.
-
----
-
-### 6. Asset Context
-
-The platform considers asset details such as:
-
-- Asset name
-- IP address
-- Environment
-- Exposure level
-- Business criticality
-- Owner
-
----
-
-## Risk Scoring Model
-
-The scoring model is explainable and uses multiple real-world prioritization signals.
-
-| Signal | Weight | Meaning |
-|---|---:|---|
-| CVSS | 25% | Technical vulnerability severity |
-| EPSS | 25% | Exploitation probability |
-| CISA KEV | 20% | Confirmed real-world exploitation |
-| Asset Exposure | 15% | Internet-facing, DMZ, internal, or dev |
-| Asset Criticality | 10% | Business importance of the affected asset |
-| Exploit Maturity | 5% | None, PoC, public exploit, or weaponized exploit |
-
-Additional modifiers are applied for:
-
-- Known ransomware usage
-- KEV vulnerabilities on exposed assets
-- Very high EPSS with high CVSS
-
----
-
-## Why This Project Is Useful
-
-A normal vulnerability scanner may report:
-
-```text
-CVE A = CVSS 9.8
-CVE B = CVSS 9.1
-```
-
-But real SOC and vulnerability-management teams need more context:
-
-```text
-CVE A is internet-facing, listed in CISA KEV, has high EPSS, and has weaponized exploit activity: fix immediately.
-
-CVE B has high CVSS, but low EPSS, no KEV listing, no exploit maturity, and affects a dev-only asset: schedule normally.
-```
-
-This project demonstrates the difference between **vulnerability detection** and **vulnerability prioritization**.
-
----
-
-## Run Locally Without Docker
-
-### Backend
-
-Open PowerShell from the project root:
-
-```powershell
-cd exploit-aware-vuln-prioritizer
-copy .env.example backend\.env
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\scripts\run_local.ps1
-```
-
-Open:
-
-```text
-http://localhost:8000/docs
-```
-
-Load sample scanner findings:
-
-```text
-POST /seed-sample-data
-```
-
----
-
-### Frontend
-
-Open a new PowerShell window:
-
-```powershell
-cd frontend
-py -m http.server 8080
-```
-
-Open:
-
-```text
-http://localhost:8080
-```
-
-Click:
-
-```text
-Load Sample Scanner Findings
-```
-
----
-
-## Run With Docker Compose
-
-```bash
-docker compose up --build
-```
-
-Open:
-
-```text
-Backend API: http://localhost:8000/docs
-Frontend:    http://localhost:8080
-```
-
----
-
-## API Endpoints
-
-| Method | Endpoint | Purpose |
-|---|---|---|
-| GET | `/health` | Health check |
-| POST | `/assets` | Create asset |
-| GET | `/assets` | List assets |
-| POST | `/intel/{cve}` | Enrich one CVE with EPSS and KEV |
-| POST | `/findings` | Create manual finding |
-| GET | `/findings` | List ranked findings |
-| GET | `/findings/{id}` | View finding details |
-| POST | `/import/nuclei` | Import Nuclei JSONL |
-| POST | `/import/openvas` | Import OpenVAS CSV |
-| POST | `/score-preview` | Test scoring logic |
-| GET | `/stats` | Dashboard metrics |
-| POST | `/seed-sample-data` | Load sample scanner findings |
-
----
-
-## Example Walkthrough
-
-1. Start the backend.
-2. Open `http://localhost:8000/docs`.
-3. Run `POST /seed-sample-data`.
-4. Run `GET /findings`.
-5. Open frontend at `http://localhost:8080`.
-6. Review ranked findings, severity, SLA, and reasoning.
-7. Use score preview to test custom scoring scenarios.
-
----
-
-## Security Notes
-
-- This project does not exploit systems.
-- This project does not contain offensive exploit code.
-- It is designed for authorized vulnerability-management workflows.
-- Scanner imports should only come from systems you own or are authorized to assess.
-
----
-
-## Windows / Python Note
-
-For local Windows execution, this project uses plain `uvicorn` instead of `uvicorn[standard]` to avoid native build dependency issues such as `httptools` and `watchfiles`.
-
-If your system defaults to Python 3.13 free-threaded, use Python 3.12 for local execution:
-
-```powershell
-py -3.12 -m venv .venv
-```
-
----
-
-## Resume Explanation
-
-**Exploit-Aware Vulnerability Prioritization Platform**
-
-Built a FastAPI-based vulnerability prioritization platform that ingests OpenVAS and Nuclei scanner outputs, enriches CVEs with EPSS and CISA KEV intelligence, and calculates an explainable remediation priority score using CVSS, exploit maturity, asset exposure, and business criticality. Developed a dashboard and API to rank findings, assign remediation SLAs, and reduce CVSS-only prioritization noise.
-
----
-
-## Future Improvements
-
-- Authentication and role-based access control
-- Scheduled background enrichment
-- Jira / ServiceNow ticket creation
-- Slack alerting for newly added KEV vulnerabilities
-- CMDB integration
-- Historical trend charts
-- SLA breach tracking
-- Container image scanner import support
-- SBOM import support
+VulnOrbit is [MIT licensed](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/LICENSE). Explore the [application source](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/tree/codex/vulnorbit-live-universe/vulnorbit), [contribution guide](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/CONTRIBUTING.md), and [validation runs](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/actions/workflows/vulnorbit.yml).
