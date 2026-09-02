@@ -1,14 +1,16 @@
-![VulnOrbit 3D vulnerability universe with vendor constellations and the known-exploitation radar](docs/screenshots/vulnorbit/01-universe.png)
+![XploitAtlas 3D vulnerability universe with vendor constellations and the known-exploitation radar](docs/screenshots/vulnorbit/01-universe.png)
 
-# VulnOrbit
+# XploitAtlas
 
-**Real vulnerability intelligence, in perspective.**
+**Helping you understand vulnerabilities, why they matter, and what to prioritize.**
 
 Explore published vulnerabilities in an animated, interactive 3D universe. Connect severity, exploitation evidence, package advisories, source updates, and remediation information to understand what changed and what deserves attention.
 
-[Download VulnOrbit](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/raw/refs/heads/codex/vulnorbit-live-universe/vulnorbit-source.zip) · [Project source](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/tree/codex/vulnorbit-live-universe/vulnorbit) · [Setup guide](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/README.md)
+[Download XploitAtlas](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/raw/refs/heads/codex/vulnorbit-live-universe/vulnorbit-source.zip) · [Project source](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/tree/codex/vulnorbit-live-universe/vulnorbit) · [Setup guide](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/README.md)
 
-VulnOrbit's runnable source currently lives on the `codex/vulnorbit-live-universe` branch. This README showcases that standalone application; the repository's earlier scanner prototype is separate.
+XploitAtlas's runnable source currently lives on the `codex/vulnorbit-live-universe` branch. This README showcases that standalone application; the repository's earlier scanner prototype is separate.
+
+Previously named VulnOrbit. Existing application folders, download filenames, and configuration names are retained for compatibility; no saved-data migration is required.
 
 ## 01 / The 3D vulnerability universe
 
@@ -18,25 +20,25 @@ The universe is animated inside the app. The README contains static captures, no
 
 ## 02 / Catalog overview and source health
 
-![VulnOrbit catalog totals, known-exploited records, critical severity, recent publications, and source health](docs/screenshots/vulnorbit/02-source-health.png)
+![XploitAtlas catalog totals, known-exploited records, critical severity, recent publications, and source health](docs/screenshots/vulnorbit/02-source-health.png)
 
 See the state of the imported catalog at a glance: tracked vulnerabilities, known-exploited records, critical severity, and recent publications. Source cards expose successful fetches, observation counts, and the next scheduled update so freshness and coverage stay visible.
 
 ## 03 / Coverage and provenance
 
-![VulnOrbit source coverage, last successful fetches, import progress, and data-provenance notes](docs/screenshots/vulnorbit/03-provenance-coverage.png)
+![XploitAtlas source coverage, last successful fetches, import progress, and data-provenance notes](docs/screenshots/vulnorbit/03-provenance-coverage.png)
 
 Check which feeds supplied evidence, when they responded, and where imports are still catching up. Published source records, observation history, and resumable imports make the catalog's coverage and remaining import progress explicit.
 
 ## 04 / Package advisory lookup
 
-![VulnOrbit package lookup form with ecosystem, registry name, exact installed version, and a not-yet-queried results panel](docs/screenshots/vulnorbit/04-package-lookup.png)
+![XploitAtlas package lookup form with ecosystem, registry name, exact installed version, and a not-yet-queried results panel](docs/screenshots/vulnorbit/04-package-lookup.png)
 
 Query a package by ecosystem, exact registry name, and installed version. Matching public advisories come from OSV, with affected ranges and published fixed versions where the source supplies them.
 
 *This capture shows the form before submission, not a package finding. Results are retrieved when a query is submitted; no example findings are preloaded.*
 
-All four images are actual frontend captures supplied from a local run on 1 September 2026. Counts and timestamps are snapshots from different moments during ingestion, not live figures or benchmark claims. [Screenshot provenance](docs/screenshots/vulnorbit/SOURCES.md).
+All four images are actual frontend captures supplied from a local run on 1 September 2026, before the rename to XploitAtlas; they retain the former VulnOrbit branding. Counts and timestamps are snapshots from different moments during ingestion, not live figures or benchmark claims. [Screenshot provenance](docs/screenshots/vulnorbit/SOURCES.md).
 
 ## Explore, investigate, and learn
 
@@ -62,15 +64,15 @@ Keyboard navigation, pause controls, reduced-motion support, and the record tabl
 | [CVE / CNA](https://www.cve.org/) | Publisher records, vendor references, affected products, and record status. |
 | [OSV](https://osv.dev/) | Package/version matching, advisory details, and fixed-version evidence. |
 
-VulnOrbit begins with an empty catalog and imports actual public-source responses. Collected observations are stored locally and refreshed while the application is running. Scheduled feeds update automatically; CVE/CNA and OSV also enrich records on demand. A source failure preserves the last successful observations and exposes the error.
+XploitAtlas begins with an empty catalog and imports actual public-source responses. Collected observations are stored locally and refreshed while the application is running. Scheduled feeds update automatically; CVE/CNA and OSV also enrich records on demand. A source failure preserves the last successful observations and exposes the error.
 
-The earlier scanner prototype's sample fixtures are not used to populate VulnOrbit.
+The earlier scanner prototype's sample fixtures are not used to populate XploitAtlas.
 
 ### Read the evidence correctly
 
 - The 3D positions and animation are a visual layout, not geographic attack locations or live attack telemetry.
 - KEV inclusion means reported exploitation in the wild, not proof that your own device is compromised.
-- EPSS is a prediction. VulnOrbit's priority score is an explainable heuristic, not a calibrated probability.
+- EPSS is a prediction. XploitAtlas's priority score is an explainable heuristic, not a calibrated probability.
 - Missing scores remain unknown; no matching package advisory is not proof of security.
 - Vendor advisories and exploit references are linked as evidence. The app does not execute exploits.
 
@@ -81,10 +83,10 @@ The earlier scanner prototype's sample fixtures are not used to populate VulnOrb
 3. On Windows, open the extracted `vulnorbit` folder and double-click **START_WINDOWS.bat**. The launcher checks installed interpreters and skips broken or unsupported ones.
 4. Open [http://127.0.0.1:8787](http://127.0.0.1:8787) in your browser.
 
-Keep the application process running for automatic updates. Initial imports can take several minutes. No third-party Python packages, Node.js installation, or external database service are needed to run VulnOrbit.
+Keep the application process running for automatic updates. Initial imports can take several minutes. No third-party Python packages, Node.js installation, or external database service are needed to run XploitAtlas.
 
 See the [setup and development guide](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/README.md) for Linux/macOS, Docker, configuration, and contribution instructions.
 
 ## Open source
 
-VulnOrbit is [MIT licensed](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/LICENSE). Explore the [application source](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/tree/codex/vulnorbit-live-universe/vulnorbit), [contribution guide](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/CONTRIBUTING.md), and [validation runs](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/actions/workflows/vulnorbit.yml).
+XploitAtlas is [MIT licensed](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/LICENSE). Explore the [application source](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/tree/codex/vulnorbit-live-universe/vulnorbit), [contribution guide](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/CONTRIBUTING.md), and [validation runs](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/actions/workflows/vulnorbit.yml).
