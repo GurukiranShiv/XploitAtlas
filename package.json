@@ -1,0 +1,9 @@
+{
+  "name": "xploitatlas",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/ui.test.js tests/style.test.js",
+    "check": "node --check static/app.js && node --check static/universe.js && node --check static/ui.js"
+  }
+}

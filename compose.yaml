@@ -1,0 +1,14 @@
+services:
+  vulnorbit:
+    build: .
+    ports:
+      - "127.0.0.1:8787:8787"
+    environment:
+      VULNORBIT_INTERVAL: "900"
+      NVD_API_KEY: "${NVD_API_KEY:-}"
+      GITHUB_TOKEN: "${GITHUB_TOKEN:-}"
+    volumes:
+      - intelligence:/app/runtime
+    restart: unless-stopped
+volumes:
+  intelligence:

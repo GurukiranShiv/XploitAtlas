@@ -1,4 +1,0 @@
-Host,IP,Port,Service,NVT OID,NVT Name,CVEs,CVSS,Severity,Solution,Summary
-prod-web-01,10.10.10.21,443,https,1.3.6.1.4.1.lab.001,MOVEit Transfer SQL Injection,CVE-2023-34362,9.8,Critical,Patch MOVEit Transfer and investigate compromise indicators,Detected vulnerable MOVEit Transfer pattern
-internal-jira-01,10.10.20.15,8080,http,1.3.6.1.4.1.lab.002,Spring4Shell Remote Code Execution,CVE-2022-22965,9.8,Critical,Upgrade Spring Framework and servlet container,Detected vulnerable Spring Framework component
-dev-api-01,10.10.40.33,8081,http,1.3.6.1.4.1.lab.003,Example High CVSS Library Issue,CVE-2024-12345,9.1,Critical,Patch during regular sprint,Example finding to show why CVSS alone is not enough

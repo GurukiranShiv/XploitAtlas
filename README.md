@@ -1,28 +1,32 @@
 ![XploitAtlas 3D vulnerability universe with vendor constellations and the known-exploitation radar](docs/screenshots/vulnorbit/01-universe.png)
 
+*These are real frontend captures from the earlier dark-theme build. The current Atlas interface uses ivory information pages, an ink-blue universe, copper accents, and IBM Plex fonts; the captures are not screenshots of the new theme.*
+
 # XploitAtlas
 
 **Helping you understand vulnerabilities, why they matter, and what to prioritize.**
 
+The Atlas interface includes a compact source register, readable locally bundled typography, responsive layouts, and bounded icons. The real-source data pipeline and Canvas visualization are retained.
+
 Explore published vulnerabilities in an animated, interactive 3D universe. Connect severity, exploitation evidence, package advisories, source updates, and remediation information to understand what changed and what deserves attention.
 
-[Download XploitAtlas](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/raw/refs/heads/codex/vulnorbit-live-universe/vulnorbit-source.zip) · [Project source](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/tree/codex/vulnorbit-live-universe/vulnorbit) · [Setup guide](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/README.md)
+[Start here](RUN_ME_FIRST.md) · [Technical guide](docs/TECHNICAL_GUIDE.md) · [Security boundaries](SECURITY.md) · [MIT license](LICENSE)
 
-XploitAtlas's runnable source currently lives on the `codex/vulnorbit-live-universe` branch. This README showcases that standalone application; the repository's earlier scanner prototype is separate.
+This repository contains the complete runnable application. Select **Code → Download ZIP**, extract the whole archive into a **new folder**, and open the folder containing **START_WINDOWS.bat** and **start.py**. No separate launcher download or files from another branch are needed.
 
-Previously named VulnOrbit. Existing application folders, download filenames, and configuration names are retained for compatibility; no saved-data migration is required.
+Previously named VulnOrbit. Existing `VULNORBIT_*` configuration settings, database names, and API compatibility identifiers are retained. The original MIT attribution is preserved. Downloading this project does not modify another installation's saved data.
 
 ## 01 / The 3D vulnerability universe
 
 The opening screenshot shows the running application: imported records form vendor constellations, with a known-exploitation radar alongside the universe. Drag to orbit, zoom, filter by severity or KEV status, and select a record to investigate its evidence.
 
-The universe is animated inside the app. The README contains static captures, not an embedded interactive viewer.
+The universe is animated inside the app. It projects a 3D layout onto a **2D Canvas**, not WebGL or Three.js. The README contains static captures, not an embedded interactive viewer.
 
 ## 02 / Catalog overview and source health
 
 ![XploitAtlas catalog totals, known-exploited records, critical severity, recent publications, and source health](docs/screenshots/vulnorbit/02-source-health.png)
 
-See the state of the imported catalog at a glance: tracked vulnerabilities, known-exploited records, critical severity, and recent publications. Source cards expose successful fetches, observation counts, and the next scheduled update so freshness and coverage stay visible.
+See the state of the imported catalog at a glance: tracked vulnerabilities, known-exploited records, critical severity, and recent publications. The Sources register exposes successful fetches, observation counts, and the next scheduled update so freshness and coverage stay visible.
 
 ## 03 / Coverage and provenance
 
@@ -66,7 +70,7 @@ Keyboard navigation, pause controls, reduced-motion support, and the record tabl
 
 XploitAtlas begins with an empty catalog and imports actual public-source responses. Collected observations are stored locally and refreshed while the application is running. Scheduled feeds update automatically; CVE/CNA and OSV also enrich records on demand. A source failure preserves the last successful observations and exposes the error.
 
-The earlier scanner prototype's sample fixtures are not used to populate XploitAtlas.
+Downloads include the application, local assets, tests, and project documentation. Runtime databases, saved intelligence, raw responses, credentials, and private notes are excluded.
 
 ### Read the evidence correctly
 
@@ -78,15 +82,29 @@ The earlier scanner prototype's sample fixtures are not used to populate XploitA
 
 ## Run it locally
 
-1. [Download the standalone project](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/raw/refs/heads/codex/vulnorbit-live-universe/vulnorbit-source.zip) and extract it.
+1. Select **Code → Download ZIP** on this repository, then choose **Extract All** into a new folder. Do not run it from inside the ZIP or overwrite your existing installation.
 2. Use a working Python **3.11 or newer** installation.
-3. On Windows, open the extracted `vulnorbit` folder and double-click **START_WINDOWS.bat**. The launcher checks installed interpreters and skips broken or unsupported ones.
+3. On Windows, open the extracted folder containing `start.py` and double-click **START_WINDOWS.bat**. The launcher checks installed interpreters and skips broken or unsupported ones.
 4. Open [http://127.0.0.1:8787](http://127.0.0.1:8787) in your browser.
 
 Keep the application process running for automatic updates. Initial imports can take several minutes. No third-party Python packages, Node.js installation, or external database service are needed to run XploitAtlas.
 
-See the [setup and development guide](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/README.md) for Linux/macOS, Docker, configuration, and contribution instructions.
+For Linux/macOS, run `python3 start.py` from the extracted project folder. Read [RUN_ME_FIRST.md](RUN_ME_FIRST.md) for first-run troubleshooting and [the technical guide](docs/TECHNICAL_GUIDE.md) for Docker, configuration, source coverage, APIs, and development checks.
+
+## Included in the download
+
+| Files | Purpose |
+| --- | --- |
+| `START_WINDOWS.bat`, `start.py` | Windows launcher and cross-platform entry point, together at the project root. |
+| Python modules and `static/` | Source ingestion, storage, HTTP API, interface, and local graphics. |
+| `RUN_ME_FIRST.md`, `docs/TECHNICAL_GUIDE.md` | Setup, troubleshooting, configuration, architecture, sources, and validation. |
+| `docs/screenshots/` | Actual frontend captures and screenshot provenance. |
+| `LICENSE`, `SECURITY.md`, `CONTRIBUTING.md` | License, security boundaries, and contribution guidance. |
+| `Dockerfile`, `compose.yaml` | Optional local Docker deployment with persistent storage. |
+| `tests/`, `source_package.py` | Project checks and complete source-download packaging. |
+
+This version is a local, single-user application with bounded source coverage. Built-in accounts, tenant isolation, asset/SBOM matching, alert delivery, and a complete historical CVE backfill are not included. Do not expose its HTTP server directly to the internet.
 
 ## Open source
 
-XploitAtlas is [MIT licensed](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/LICENSE). Explore the [application source](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/tree/codex/vulnorbit-live-universe/vulnorbit), [contribution guide](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/blob/codex/vulnorbit-live-universe/vulnorbit/CONTRIBUTING.md), and [validation runs](https://github.com/GurukiranShiv/Exploit-Aware-Vulnerability-Prioritization-Platform/actions/workflows/vulnorbit.yml).
+XploitAtlas is [MIT licensed](LICENSE). The bundled, unmodified [IBM Plex fonts](static/fonts/README.md) retain their [SIL Open Font License](static/fonts/OFL.txt). See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and [SECURITY.md](SECURITY.md) for security boundaries. Upstream intelligence retains each provider's terms and attribution.
