@@ -30,7 +30,7 @@ jobs:
           node --check static/ui.js
       - name: Test boundaries, frontend helpers, and complete downloads
         run: |
-          node --test tests/ui.test.js
+          node --test tests/ui.test.js tests/style.test.js
           python3 -m unittest discover -s tests -p 'test_*.py' -v
       - name: Check the standalone archive
         run: |

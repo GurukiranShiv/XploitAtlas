@@ -39,6 +39,10 @@ class DistributionTests(unittest.TestCase):
             "SECURITY.md", "CONTRIBUTING.md", "docs/TECHNICAL_GUIDE.md",
             "docs/screenshots/vulnorbit/01-universe.png",
             "docs/screenshots/vulnorbit/SOURCES.md",
+            "tests/style.test.js", "static/fonts/OFL.txt",
+            "static/fonts/README.md", "static/fonts/IBMPlexSans-Regular.woff2",
+            "static/fonts/IBMPlexSans-SemiBold.woff2", "static/fonts/IBMPlexSerif-Regular.woff2",
+            "static/fonts/IBMPlexSerif-Medium.woff2", "static/fonts/IBMPlexMono-Regular.woff2",
         }
         self.assertTrue(required.issubset(SOURCE_FILES))
         self.assertEqual(len(source_paths()), len(SOURCE_FILES))
@@ -61,6 +65,15 @@ class DistributionTests(unittest.TestCase):
             self.assertEqual(len(archive.namelist()), len(SOURCE_FILES))
             for relative in SOURCE_FILES:
                 self.assertEqual(archive.read(ARCHIVE_ROOT + "/" + relative), (ROOT / relative).read_bytes())
+
+    def test_public_download_has_no_preview_guide_or_duplicate_app_pages(self):
+        self.assertNotIn("LOCAL_PREVIEW.md", SOURCE_FILES)
+        self.assertEqual([p for p in SOURCE_FILES if p.endswith(".html")], ["static/index.html"])
+        for name in ("README.md", "RUN_ME_FIRST.md"):
+            guide = (ROOT / name).read_text(encoding="utf-8")
+            self.assertNotIn("LOCAL_PREVIEW.md", guide)
+            self.assertNotIn("not published to GitHub", guide)
+        self.assertTrue(all(not p.endswith((".doc", ".docx", ".pdf", ".sqlite3", ".db", ".zip")) for p in SOURCE_FILES))
 
     def test_unknown_private_files_are_not_packaged(self):
         with tempfile.TemporaryDirectory(prefix="xploitatlas-private-check-") as temporary:
@@ -189,6 +202,17 @@ class DistributionTests(unittest.TestCase):
                     status, _, body = request(path)
                     self.assertEqual(status, 200)
                     self.assertTrue(body)
+                for relative in SOURCE_FILES:
+                    if relative.endswith(".woff2"):
+                        status, headers, body = request("/" + relative)
+                        self.assertEqual(status, 200)
+                        self.assertEqual(headers["Content-Type"], "font/woff2")
+                        self.assertEqual(body, (project / relative).read_bytes())
+                        self.assertTrue(body.startswith(b"wOF2"))
+                status, _, body = request("/static/style.css?v=atlas-1")
+                self.assertEqual(status, 200)
+                self.assertIn(b"grid-template-columns:18px minmax(0,1fr)", body)
+                self.assertIn(b'font-family:"IBM Plex Serif"', body)
                 status, headers, body = request("/api/source")
                 self.assertEqual(status, 200)
                 self.assertIn("XploitAtlas-source.zip", headers["Content-Disposition"])

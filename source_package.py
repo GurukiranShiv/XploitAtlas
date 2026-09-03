@@ -36,6 +36,13 @@ SOURCE_FILES = (
     "source_package.py",
     "start.py",
     "static/app.js",
+    "static/fonts/IBMPlexSans-Regular.woff2",
+    "static/fonts/IBMPlexSans-SemiBold.woff2",
+    "static/fonts/IBMPlexSerif-Regular.woff2",
+    "static/fonts/IBMPlexSerif-Medium.woff2",
+    "static/fonts/IBMPlexMono-Regular.woff2",
+    "static/fonts/OFL.txt",
+    "static/fonts/README.md",
     "static/index.html",
     "static/mark.svg",
     "static/style.css",
@@ -46,6 +53,7 @@ SOURCE_FILES = (
     "tests/test_distribution.py",
     "tests/test_live.py",
     "tests/ui.test.js",
+    "tests/style.test.js",
     "tests/verify_archive.py",
 )
 

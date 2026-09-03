@@ -2,6 +2,8 @@
 
 This folder is the complete project. Keep its files together.
 
+When updating, extract into a new folder and keep your current installation intact. If the old app is running, stop its terminal with **Ctrl+C** before starting the new copy on the same port.
+
 ## Windows
 
 1. Install a working Python 3.11 or newer from [python.org](https://www.python.org/downloads/windows/). Enable the Python launcher when the installer offers it.
@@ -57,6 +59,10 @@ START_WINDOWS.bat --port 8788
 ```
 
 Then visit [http://127.0.0.1:8788](http://127.0.0.1:8788).
+
+### The old design still appears
+
+The current Atlas interface has an ink-blue header, ivory information pages, copper accents, and serif headings. Make sure the terminal was started from the new extracted folder and that the browser port matches it. If an old page remains open, press **Ctrl+Shift+R** to reload its assets.
 
 ## Linux or macOS
 

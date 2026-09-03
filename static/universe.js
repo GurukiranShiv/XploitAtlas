@@ -137,14 +137,14 @@ export class Universe {
   draw() {
     if(!this.ctx||!this.width||!this.height)return;
     const ctx=this.ctx;
-    ctx.fillStyle='#0d131b';ctx.fillRect(0,0,this.width,this.height);
+    ctx.fillStyle='#0e2033';ctx.fillRect(0,0,this.width,this.height);
     const glow=ctx.createRadialGradient(this.width*.5,this.height*.5,0,this.width*.5,this.height*.5,this.width*.52);
-    glow.addColorStop(0,'#162324');glow.addColorStop(.6,'#101922');glow.addColorStop(1,'#0d131b');
+    glow.addColorStop(0,'#1a3849');glow.addColorStop(.6,'#142b40');glow.addColorStop(1,'#0e2033');
     ctx.fillStyle=glow;ctx.fillRect(0,0,this.width,this.height);
     if(!this.nodes.length)return;
-    ctx.lineWidth=.65;ctx.strokeStyle='#374e503b';
+    ctx.lineWidth=.65;ctx.strokeStyle='#849daf3b';
     this.ring(290,0);this.ring(290,.9);this.ring(290,-.9);
-    ctx.strokeStyle='#35424830';this.ring(190,0);
+    ctx.strokeStyle='#839bb330';this.ring(190,0);
     this.projected=this.nodes.map(node=>{
       const p=this.project(node);
       const cvss=node.record.cvss;
@@ -154,7 +154,7 @@ export class Universe {
     const focus=this.projected.find(p=>p.record.id===(this.hover?.record.id||this.selected));
     if(focus) {
       const peers=this.projected.filter(n=>n.vendor===focus.vendor && n.record.id!==focus.record.id);
-      ctx.strokeStyle='#a2c58142';ctx.lineWidth=.7;
+      ctx.strokeStyle='#d7ac884f';ctx.lineWidth=.7;
       for(const node of peers.slice(0,60)){ctx.beginPath();ctx.moveTo(focus.x,focus.y);ctx.lineTo(node.x,node.y);ctx.stroke();}
     }
     for(const node of this.projected) {
@@ -172,9 +172,9 @@ export class Universe {
     if(focus) {
       const node=this.projected.find(p=>p.record.id===focus.record.id);
       if(node){
-        ctx.beginPath();ctx.strokeStyle='#e2f6c8';ctx.lineWidth=1;
+        ctx.beginPath();ctx.strokeStyle='#efb58e';ctx.lineWidth=1;
         ctx.arc(node.x,node.y,node.radius+6,0,Math.PI*2);ctx.stroke();
-        ctx.font='10px ui-monospace,Consolas,monospace';ctx.fillStyle='#c9dbba';
+        ctx.font='12px "IBM Plex Mono",Consolas,monospace';ctx.fillStyle='#efb58e';
         const label=node.vendor.length>38?node.vendor.slice(0,35)+'…':node.vendor;
         ctx.fillText(label,Math.max(10,Math.min(this.width-ctx.measureText(label).width-10,node.x+15)),Math.max(20,node.y-14));
       }
@@ -183,7 +183,7 @@ export class Universe {
       for(const node of this.nodes) counted.set(node.vendor,(counted.get(node.vendor)||0)+1);
       const top=[...counted.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5);
       const boxes=[];
-      ctx.font='9px ui-monospace,Consolas,monospace';ctx.fillStyle='#79958d';
+      ctx.font='12px "IBM Plex Mono",Consolas,monospace';ctx.fillStyle='#b0c1d1';
       for(const [vendor] of top) {
         const member=this.nodes.find(n=>n.vendor===vendor);
         const p=this.project(member.center),label=vendor.length>23?vendor.slice(0,20)+'…':vendor;

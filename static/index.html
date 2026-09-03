@@ -3,12 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0a0d12">
+  <meta name="theme-color" content="#163047">
   <meta name="description" content="XploitAtlas helps you understand vulnerabilities, why they matter, and what to prioritize with real-source intelligence and an interactive 3D universe.">
   <title>XploitAtlas — Vulnerability intelligence</title>
   <link rel="icon" type="image/svg+xml" href="/static/mark.svg">
-  <link rel="stylesheet" href="/static/style.css">
-  <script type="module" src="/static/app.js"></script>
+  <link rel="preload" href="/static/fonts/IBMPlexSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/static/fonts/IBMPlexSerif-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/static/style.css?v=atlas-1">
+  <script type="module" src="/static/app.js?v=atlas-1"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to intelligence</a>
@@ -81,7 +83,7 @@
 
     <section id="view-sources" class="view" hidden>
       <div class="section-heading"><div><span class="eyebrow muted">05 / TRUST &amp; PROVENANCE</span><h2>Every signal has a source</h2><p class="section-description">Last successful fetches, current coverage, and upstream failures are visible here.</p></div><a class="button subtle" href="/api/export"><span data-icon="download"></span>Export evidence JSON</a></div>
-      <div id="scheduler-status" class="history-note"></div><div id="sources-grid" class="sources-grid"></div>
+      <div id="scheduler-status" class="history-note" role="status" aria-live="polite"></div><div id="sources-grid" class="sources-grid"></div>
       <div class="method-grid"><article class="panel"><span class="eyebrow accent">DATA CONTRACT</span><h3>Real observations, durable history</h3><p>Imports retain source identities and observation times. SQLite saves the canonical catalog, source versions, and changes together. Raw GET responses are retained for 30 days with SHA-256 fingerprints.</p><p>A failed source preserves the last successful data and exposes its retry time. An empty or malformed KEV response cannot erase the catalog.</p></article><article class="panel"><span class="eyebrow accent">COVERAGE</span><h3>A growing, bounded catalog</h3><p>The full CISA KEV catalog anchors known exploitation. NVD begins with KEV metrics and seven days of published and modified CVEs, then follows both streams. GitHub starts with seven days of reviewed advisory updates.</p><p>Imports are paginated and resumable. EPSS rotates through tracked CVEs. CVE/CNA and OSV enrich records on investigation. This is not a claim to contain every historical vulnerability.</p></article></div>
     </section>
 

@@ -125,7 +125,7 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 node --check static/app.js
 node --check static/universe.js
 node --check static/ui.js
-node --test tests/ui.test.js
+node --test tests/ui.test.js tests/style.test.js
 ```
 
 Node is needed only for these optional JavaScript checks, not to run the app. Opt-in integration tests fetch actual upstream feeds into a disposable directory and exercise normalization, transaction rollback, KEV reconciliation, history, raw-response hashing, package matching, HTTP routes, origin checks, and source/export downloads:

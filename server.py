@@ -192,7 +192,7 @@ class Handler(BaseHTTPRequestHandler):
             if not file.is_relative_to(STATIC.resolve()) or not file.is_file():
                 self.json(404, {"error": "Not found."})
                 return
-            types = {".js": "text/javascript", ".css": "text/css", ".html": "text/html", ".svg": "image/svg+xml"}
+            types = {".js": "text/javascript", ".css": "text/css", ".html": "text/html", ".svg": "image/svg+xml", ".woff2": "font/woff2"}
             content_type = types.get(file.suffix, mimetypes.guess_type(str(file))[0] or "application/octet-stream")
             self.send_bytes(200, file.read_bytes(), content_type + ("; charset=utf-8" if content_type.startswith("text/") else ""))
 

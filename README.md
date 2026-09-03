@@ -1,14 +1,18 @@
 ![XploitAtlas 3D vulnerability universe with vendor constellations and the known-exploitation radar](docs/screenshots/vulnorbit/01-universe.png)
 
+*These are real frontend captures from the earlier dark-theme build. The current Atlas interface uses ivory information pages, an ink-blue universe, copper accents, and IBM Plex fonts; the captures are not screenshots of the new theme.*
+
 # XploitAtlas
 
 **Helping you understand vulnerabilities, why they matter, and what to prioritize.**
+
+The Atlas interface includes a compact source register, readable locally bundled typography, responsive layouts, and bounded icons. The real-source data pipeline and Canvas visualization are retained.
 
 Explore published vulnerabilities in an animated, interactive 3D universe. Connect severity, exploitation evidence, package advisories, source updates, and remediation information to understand what changed and what deserves attention.
 
 [Start here](RUN_ME_FIRST.md) · [Technical guide](docs/TECHNICAL_GUIDE.md) · [Security boundaries](SECURITY.md) · [MIT license](LICENSE)
 
-This repository contains the complete runnable application. Select **Code → Download ZIP**, extract the whole archive, and open the folder containing **START_WINDOWS.bat** and **start.py**. No separate launcher download or files from another branch are needed.
+This repository contains the complete runnable application. Select **Code → Download ZIP**, extract the whole archive into a **new folder**, and open the folder containing **START_WINDOWS.bat** and **start.py**. No separate launcher download or files from another branch are needed.
 
 Previously named VulnOrbit. Existing `VULNORBIT_*` configuration settings, database names, and API compatibility identifiers are retained. The original MIT attribution is preserved. Downloading this project does not modify another installation's saved data.
 
@@ -16,13 +20,13 @@ Previously named VulnOrbit. Existing `VULNORBIT_*` configuration settings, datab
 
 The opening screenshot shows the running application: imported records form vendor constellations, with a known-exploitation radar alongside the universe. Drag to orbit, zoom, filter by severity or KEV status, and select a record to investigate its evidence.
 
-The universe is animated inside the app. This public version projects a 3D layout onto a **2D Canvas**; it does not include the separate local-only WebGL/Three.js preview or unfinished upgrades. The README contains static captures, not an embedded interactive viewer.
+The universe is animated inside the app. It projects a 3D layout onto a **2D Canvas**, not WebGL or Three.js. The README contains static captures, not an embedded interactive viewer.
 
 ## 02 / Catalog overview and source health
 
 ![XploitAtlas catalog totals, known-exploited records, critical severity, recent publications, and source health](docs/screenshots/vulnorbit/02-source-health.png)
 
-See the state of the imported catalog at a glance: tracked vulnerabilities, known-exploited records, critical severity, and recent publications. Source cards expose successful fetches, observation counts, and the next scheduled update so freshness and coverage stay visible.
+See the state of the imported catalog at a glance: tracked vulnerabilities, known-exploited records, critical severity, and recent publications. The Sources register exposes successful fetches, observation counts, and the next scheduled update so freshness and coverage stay visible.
 
 ## 03 / Coverage and provenance
 
@@ -66,7 +70,7 @@ Keyboard navigation, pause controls, reduced-motion support, and the record tabl
 
 XploitAtlas begins with an empty catalog and imports actual public-source responses. Collected observations are stored locally and refreshed while the application is running. Scheduled feeds update automatically; CVE/CNA and OSV also enrich records on demand. A source failure preserves the last successful observations and exposes the error.
 
-This clean download contains no interview preparation, old scanner prototype, sample scanner dataset, backend-output screenshots, runtime database, or saved intelligence.
+Downloads include the application, local assets, tests, and project documentation. Runtime databases, saved intelligence, raw responses, credentials, and private notes are excluded.
 
 ### Read the evidence correctly
 
@@ -78,7 +82,7 @@ This clean download contains no interview preparation, old scanner prototype, sa
 
 ## Run it locally
 
-1. Select **Code → Download ZIP** on GitHub, then right-click the ZIP and choose **Extract All**. Do not run it from inside the ZIP.
+1. Select **Code → Download ZIP** on this repository, then choose **Extract All** into a new folder. Do not run it from inside the ZIP or overwrite your existing installation.
 2. Use a working Python **3.11 or newer** installation.
 3. On Windows, open the extracted folder containing `start.py` and double-click **START_WINDOWS.bat**. The launcher checks installed interpreters and skips broken or unsupported ones.
 4. Open [http://127.0.0.1:8787](http://127.0.0.1:8787) in your browser.
@@ -103,4 +107,4 @@ This version is a local, single-user application with bounded source coverage. B
 
 ## Open source
 
-XploitAtlas is [MIT licensed](LICENSE). See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and [SECURITY.md](SECURITY.md) for security boundaries. Upstream intelligence retains each provider's terms and attribution.
+XploitAtlas is [MIT licensed](LICENSE). The bundled, unmodified [IBM Plex fonts](static/fonts/README.md) retain their [SIL Open Font License](static/fonts/OFL.txt). See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and [SECURITY.md](SECURITY.md) for security boundaries. Upstream intelligence retains each provider's terms and attribution.
