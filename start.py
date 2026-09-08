@@ -1,7 +1,11 @@
-"""Run with Python 3.11 or newer; no third-party runtime dependencies."""
+"""Portable entry point; runtime dependencies are bundled with the project."""
 import sys
-if sys.version_info < (3, 11):
-    raise SystemExit("XploitAtlas requires Python 3.11 or newer. Python 3.12 is recommended.")
+if sys.version_info < (3,11):
+    raise SystemExit('MasterMonk requires Python 3.11 or newer.')
 from server import main
-if __name__ == "__main__":
-    raise SystemExit(main())
+if __name__=='__main__':
+    try:
+        raise SystemExit(main())
+    except (OSError,ValueError,RuntimeError) as exc:
+        print('MasterMonk: '+str(exc),file=sys.stderr)
+        raise SystemExit(1)

@@ -1,15 +1,11 @@
-# Contributing to XploitAtlas
+# Contributing
 
-Keep the real-source contract intact. A missing response is unknown; an import failure is a visible failure. Do not seed the runtime database with example vulnerabilities, invent scores, label public exploit references as verified executions, or derive event history that was never observed.
+Use real publisher records and preserve their identity, source URL, observation time, and relevant source timestamp. Failed imports must preserve the last successful evidence and expose their error. Unknown values remain unknown.
 
-New adapters should preserve the publisher identifier, source URL, observation time, relevant source timestamp, and source-specific evidence. Validate the response before reconciliation. Commit data and cursor changes together. Use deterministic identity resolution; do not merge advisories solely because their titles look similar.
+Do not add synthetic vulnerability fixtures, demo results, preset accounts, or bundled datasets. Verification can use the actual empty first-run state, this project's real dependencies, and current provider responses in disposable directories. Never publish credentials or runtime data with verification output.
 
-Place new network hosts in the explicit allowlist only when a documented provider integration needs them. Scope credentials to the intended provider, enforce bounded requests and provider rate limits, and retain provenance. Preserve unknown, rejected, and conflicting records explicitly.
+Keep owner checks, API scopes, CSRF protection, bounded requests, and transaction boundaries intact when adding features. Provider additions need documented provenance and rate limits. UI changes need keyboard access, readable evidence outside the 3D view, and reduced-motion support.
 
-Render external text with escaping or textContent. Keep keyboard/table alternatives, reduced-motion behavior, and data encodings understandable. Layout coordinates and explanatory animation must not be presented as observed attack data.
+Run **python -E -m unittest discover -s tests -v** for fast pure-logic feedback, then **python -E tools/verify.py** and, when changing provider behavior, the relevant real-source checks. Unit tests may use mathematical primitives, format identifiers from official taxonomies, and this repository's actual dependency files; do not add synthetic vulnerability or advisory records. Report what ran and any unverified behavior; an unavailable provider is not a passing check. [Operations](docs/OPERATIONS.md) explains validation and graphics rebuilding.
 
-Run the validation commands in [the technical guide](docs/TECHNICAL_GUIDE.md). Add meaningful tests for changed trust boundaries, identity rules, source removal, or transaction behavior. Live test inputs belong in disposable directories, and upstream outages should never be hidden behind a substitute dataset.
-
-Keep the download self-contained. Add required public project files to `SOURCE_FILES` in `source_package.py`, and run the distribution tests. Never include runtime databases, raw responses, environment secrets, private notes, or unrelated documents. Preserve the first-run guide, license, security boundaries, and screenshot provenance.
-
-Useful future extensions include documented CSAF/VEX connectors, inventory and SBOM matching, asset-aware prioritization, deduplicated alerts, and a supervised authenticated multi-user deployment. These need explicit provenance and coverage rules of their own.
+Keep user setup in README and operational detail in docs/OPERATIONS.md. Add required public files to SOURCE_FILES in source_package.py. Preserve dependency licenses and authentic screenshot provenance; remove internal review notes before proposing a public release.

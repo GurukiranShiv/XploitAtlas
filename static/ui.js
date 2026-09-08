@@ -79,7 +79,8 @@ export function severityPill(record) {
   return '<span class="pill '+tone+'-pill">' + escapeHTML(kind) + '</span>';
 }
 export function priorityMarkup(record) {
-  const score=record.priority?.score ?? 0;
+  const score=record.priority?.score;
+  if(typeof score!=='number'||!Number.isFinite(score))return '<span class="muted">Unknown</span>';
   return '<span class="score"><span class="score-line"><i style="width:'+Math.max(0,Math.min(100,score))+'%"></i></span>'+num(score)+'</span><span class="subcell">'+escapeHTML(record.priority?.band||'Unknown')+'</span>';
 }
 export function empty(title, description, action='') {
@@ -88,7 +89,7 @@ export function empty(title, description, action='') {
 export function recordTable(records) {
   if(!records.length) return empty('No matching observations','Try another filter, or inspect Sources to see which feeds have responded.');
   return '<div class="table-scroll"><table><thead><tr><th scope="col">Vulnerability</th><th scope="col">Severity</th><th scope="col">CVSS</th><th scope="col">EPSS · 30 days</th><th scope="col">Priority</th><th scope="col">Evidence</th></tr></thead><tbody>'+
-    records.map(r=>'<tr><td><button type="button" class="record-button" data-record="'+escapeHTML(r.id)+'"><span class="record-id">'+escapeHTML(r.id)+'</span><strong>'+escapeHTML(r.title)+'</strong></button><span class="subcell">'+escapeHTML(r.vendor)+' · '+escapeHTML(r.product)+'</span></td>'+
+    records.map(r=>'<tr><td><button type="button" class="record-button" '+(r.findingId?'data-finding="'+escapeHTML(r.findingId):'data-record="'+escapeHTML(r.id))+'"><span class="record-id">'+escapeHTML(r.id)+'</span><strong>'+escapeHTML(r.title)+'</strong></button><span class="subcell">'+escapeHTML(r.vendor)+' · '+escapeHTML(r.product)+'</span></td>'+
       '<td>'+severityPill(r)+(r.withdrawn?'<span class="subcell coral">Withdrawn / rejected</span>':'')+'</td><td class="metric">'+metric(r.cvss)+'<span class="subcell">'+escapeHTML(sourceNames[r.cvssSource]||'No metric')+'</span></td>'+
       '<td class="metric">'+percent(r.epss)+'<span class="subcell">'+(r.epssDate?date(r.epssDate):'No daily score')+'</span></td><td>'+priorityMarkup(r)+'</td><td>'+(r.kev?'<span class="pill coral-pill">KEV</span>':'<span class="muted">No KEV observation</span>')+'<span class="subcell">'+num((r.sourceIds||[]).length)+' sources</span></td></tr>').join('')+'</tbody></table></div>';
 }
@@ -97,8 +98,8 @@ export function eventMarkup(item) {
   const changes=item.changes||[];
   const pretty=value=>value===undefined || value===null ? 'Not supplied' : typeof value==='string'?value:JSON.stringify(value,null,2);
   const diff=value=>{const text=pretty(value);return escapeHTML(text.slice(0,12000))+(text.length>12000?'\n[Display shortened; consult the source record for complete content.]':'');};
-  return '<details class="change"><summary><span class="event-icon">'+icon(item.kind==='exploitation_changed'?'target':item.kind==='remediation_changed'?'wrench':'refresh')+'</span><span><span class="event-title"><b class="record-id">'+escapeHTML(item.cve)+'</b> · '+escapeHTML(kinds[item.kind]||item.kind)+'</span><span class="event-meta">'+escapeHTML(sourceNames[item.source]||item.source)+(changes.length?' · '+changes.length+' changed fields':'')+'</span></span><time class="event-time" datetime="'+escapeHTML(item.observedAt)+'">'+date(item.observedAt,true)+'</time></summary>'+
-    '<div class="change-body"><button class="text-button" data-record="'+escapeHTML(item.cve)+'">Investigate record '+icon('arrow')+'</button><p class="footnote">Observed locally '+date(item.observedAt,true)+'. Source timestamp: '+date(item.sourceTime,true)+'. Observation time is not the original disclosure time.</p>'+
+  return '<details class="change" data-event="'+escapeHTML(item.id)+'"><summary><span class="event-icon">'+icon(item.kind==='exploitation_changed'?'target':item.kind==='remediation_changed'?'wrench':'refresh')+'</span><span><span class="event-title"><b class="record-id">'+escapeHTML(item.cve)+'</b> · '+escapeHTML(kinds[item.kind]||item.kind)+'</span><span class="event-meta">'+escapeHTML(sourceNames[item.source]||item.source)+(changes.length?' · '+changes.length+' changed fields':'')+'</span></span><time class="event-time" datetime="'+escapeHTML(item.observedAt)+'">'+date(item.observedAt,true)+'</time></summary>'+
+    '<div class="change-body"><button type="button" class="text-button" data-record="'+escapeHTML(item.cve)+'">Investigate record '+icon('arrow')+'</button><p class="footnote">Observed locally '+date(item.observedAt,true)+'. Source timestamp: '+date(item.sourceTime,true)+'.</p>'+
     (changes.length?changes.map(c=>'<div class="diff"><strong>'+escapeHTML(c.field)+'</strong><div class="diff-values"><div><small>BEFORE</small><pre>'+diff(c.before)+'</pre></div><div><small>AFTER</small><pre>'+diff(c.after)+'</pre></div></div></div>').join(''):'<p class="footnote">This is the first saved observation from this source after its baseline. No earlier local version exists to compare.</p>')+'</div></details>';
 }
 export async function api(url, options={}) {

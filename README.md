@@ -1,110 +1,191 @@
-![XploitAtlas 3D vulnerability universe with vendor constellations and the known-exploitation radar](docs/screenshots/vulnorbit/01-universe.png)
+![MasterMonk 3.2.0 fullscreen evidence universe](docs/screenshots/mastermonk-3.2/01-universe-overview.png)
 
-*These are real frontend captures from the earlier dark-theme build. The current Atlas interface uses ivory information pages, an ink-blue universe, copper accents, and IBM Plex fonts; the captures are not screenshots of the new theme.*
+# MasterMonk
 
-# XploitAtlas
+**Open-source vulnerability intelligence for discovering, comparing, investigating, and teaching from public evidence.**
 
-**Helping you understand vulnerabilities, why they matter, and what to prioritize.**
+**Current version: 3.2.0 · Python 3.11+ · Windows, macOS, Linux, Android, iPhone, and iPad**
 
-The Atlas interface includes a compact source register, readable locally bundled typography, responsive layouts, and bounded icons. The real-source data pipeline and Canvas visualization are retained.
+[Download the complete project](https://github.com/GurukiranShiv/MasterMonk/archive/refs/heads/main.zip) · [Operations](docs/OPERATIONS.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md)
 
-Explore published vulnerabilities in an animated, interactive 3D universe. Connect severity, exploitation evidence, package advisories, source updates, and remediation information to understand what changed and what deserves attention.
+MasterMonk starts as an empty, local-first application and builds its catalog from configured public sources. It combines a full-screen 3D evidence universe with conventional search, source-aware record investigation, exact-version component comparison, change intelligence, shareable highlights, and a guided learning lab.
 
-[Start here](RUN_ME_FIRST.md) · [Technical guide](docs/TECHNICAL_GUIDE.md) · [Security boundaries](SECURITY.md) · [MIT license](LICENSE)
+The interface does not ship with simulated vulnerabilities, preset accounts, or a decorative “live attack” feed. Counts, records, source states, and timestamps come from the running instance. Space, cloud, glow, orbit, and flight effects are navigation and evidence encodings—not attack or geographic telemetry.
 
-This repository contains the complete runnable application. Select **Code → Download ZIP**, extract the whole archive into a **new folder**, and open the folder containing **START_WINDOWS.bat** and **start.py**. No separate launcher download or files from another branch are needed.
+## What is new in 3.2.0
 
-Previously named VulnOrbit. Existing `VULNORBIT_*` configuration settings, database names, and API compatibility identifiers are retained. The original MIT attribution is preserved. Downloading this project does not modify another installation's saved data.
+- **Component vs. component comparison:** query two exact package versions against the current OSV service and separate advisories into component A only, both components, and component B only.
+- **Public evidence badges:** generate an SVG badge plus ready-to-copy HTML and Markdown for each exact-version query. An empty response is shown as “0 OSV matches,” never as “safe.”
+- **Neutral SARIF output:** scanner exports no longer contain a hardcoded personal repository URL.
+- **Pure logic tests:** fast isolated tests cover priority mathematics, CAPEC parsing primitives, badge wording, dependency parsing, and SARIF metadata in addition to the end-to-end verification suite.
+- **Evidence Cosmos improvements:** fullscreen rendering, deep-space background, camera flight into a selected record, arrival trails for newly indexed records, mini-map orientation, mobile arrow controls, and grouping by company, weakness, severity, or collected source.
+- **Investigation and learning:** a focused evidence drawer, detailed record workspace, CWE → CAPEC → ATT&CK learning where MITRE publishes mappings, and a single-screen investigation lab.
+- **Change intelligence:** provider-reported publication timelines, local observation history, explicit UTC date comparison, and drill-down into the records behind each count.
+- **Cross-platform install:** the same responsive Progressive Web App can be installed from a reachable HTTPS MasterMonk server on mobile or desktop.
 
-## 01 / The 3D vulnerability universe
+## See MasterMonk in action
 
-The opening screenshot shows the running application: imported records form vendor constellations, with a known-exploitation radar alongside the universe. Drag to orbit, zoom, filter by severity or KEV status, and select a record to investigate its evidence.
+These are captures from a running MasterMonk 3.2.0 instance on 8 September 2026. Catalog totals are evidence from that captured instance and will change as providers and local collection history change. [Screenshot provenance](docs/screenshots/mastermonk-3.2/SOURCES.md).
 
-The universe is animated inside the app. It projects a 3D layout onto a **2D Canvas**, not WebGL or Three.js. The README contains static captures, not an embedded interactive viewer.
+### Fly from the universe into one real record
 
-## 02 / Catalog overview and source health
+Touch or click a vulnerability system to start a short camera flight. MasterMonk moves through the depth-layered field, focuses the selected evidence system, and opens the investigation drawer after arrival.
 
-![XploitAtlas catalog totals, known-exploited records, critical severity, recent publications, and source health](docs/screenshots/vulnorbit/02-source-health.png)
+![A selected vulnerability in the MasterMonk evidence universe with its investigation drawer](docs/screenshots/mastermonk-3.2/02-universe-focused-record.png)
 
-See the state of the imported catalog at a glance: tracked vulnerabilities, known-exploited records, critical severity, and recent publications. The Sources register exposes successful fetches, observation counts, and the next scheduled update so freshness and coverage stay visible.
+### Discover and prioritize collected evidence
 
-## 03 / Coverage and provenance
-
-![XploitAtlas source coverage, last successful fetches, import progress, and data-provenance notes](docs/screenshots/vulnorbit/03-provenance-coverage.png)
-
-Check which feeds supplied evidence, when they responded, and where imports are still catching up. Published source records, observation history, and resumable imports make the catalog's coverage and remaining import progress explicit.
-
-## 04 / Package advisory lookup
-
-![XploitAtlas package lookup form with ecosystem, registry name, exact installed version, and a not-yet-queried results panel](docs/screenshots/vulnorbit/04-package-lookup.png)
-
-Query a package by ecosystem, exact registry name, and installed version. Matching public advisories come from OSV, with affected ranges and published fixed versions where the source supplies them.
-
-*This capture shows the form before submission, not a package finding. Results are retrieved when a query is submitted; no example findings are preloaded.*
-
-All four images are actual frontend captures supplied from a local run on 1 September 2026, before the rename to XploitAtlas; they retain the former VulnOrbit branding. Counts and timestamps are snapshots from different moments during ingestion, not live figures or benchmark claims. [Screenshot provenance](docs/screenshots/vulnorbit/SOURCES.md).
-
-## Explore, investigate, and learn
-
-| View | What you can do |
+| Discover new disclosures and KEV additions | Search and sort the intelligence catalog |
 | --- | --- |
-| **Universe** | Orbit vendor constellations, filter real records, and focus on known-exploited vulnerabilities. |
-| **Intelligence** | Search and sort the catalog, inspect source-attributed evidence, and review explainable priorities. |
-| **Changes** | Compare newly observed records and field-level changes between stored source versions. |
-| **Packages** | Look up an exact package/version and inspect matching advisories and published fixes. |
-| **Sources** | Review feed health, observation times, import coverage, and upstream failures. |
-| **Learn** | Follow an animated investigation walkthrough using a real record selected from the catalog. |
+| ![MasterMonk Discover view](docs/screenshots/mastermonk-3.2/03-discover-overview.png) | ![MasterMonk Intelligence catalog](docs/screenshots/mastermonk-3.2/13-intelligence-catalog.png) |
 
-Keyboard navigation, pause controls, reduced-motion support, and the record table keep the interface usable beyond the 3D view.
+### Compare exact component versions
 
-## Real sources, clearly attributed
+The Compare workspace performs two current OSV exact-version queries. It reports absence as absence, not safety, and creates an independently refreshed public SVG badge for either component.
 
-| Source | Evidence contributed |
+| Compare two components | Copy public evidence badges |
 | --- | --- |
-| [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) | Known exploitation, catalog dates, ransomware-use indicators, and required remediation actions. |
-| [NVD](https://nvd.nist.gov/) | CVE descriptions, severity, weakness identifiers, affected-product context, and reference links. |
-| [FIRST EPSS](https://www.first.org/epss/) | Dated exploitation-probability estimates and percentiles. |
-| [GitHub Advisory Database](https://github.com/advisories) | Reviewed package advisories, aliases, affected ranges, and first patched releases. |
-| [CVE / CNA](https://www.cve.org/) | Publisher records, vendor references, affected products, and record status. |
-| [OSV](https://osv.dev/) | Package/version matching, advisory details, and fixed-version evidence. |
+| ![MasterMonk component comparison](docs/screenshots/mastermonk-3.2/10-component-compare-form.png) | ![MasterMonk public component evidence badges](docs/screenshots/mastermonk-3.2/11-component-evidence-badges.png) |
 
-XploitAtlas begins with an empty catalog and imports actual public-source responses. Collected observations are stored locally and refreshed while the application is running. Scheduled feeds update automatically; CVE/CNA and OSV also enrich records on demand. A source failure preserves the last successful observations and exposes the error.
+![MasterMonk comparison split into component A only, both components, and component B only](docs/screenshots/mastermonk-3.2/12-component-differences.png)
 
-Downloads include the application, local assets, tests, and project documentation. Runtime databases, saved intelligence, raw responses, credentials, and private notes are excluded.
+### Open the evidence and learn with the same record
 
-### Read the evidence correctly
-
-- The 3D positions and animation are a visual layout, not geographic attack locations or live attack telemetry.
-- KEV inclusion means reported exploitation in the wild, not proof that your own device is compromised.
-- EPSS is a prediction. XploitAtlas's priority score is an explainable heuristic, not a calibrated probability.
-- Missing scores remain unknown; no matching package advisory is not proof of security.
-- Vendor advisories and exploit references are linked as evidence. The app does not execute exploits.
-
-## Run it locally
-
-1. Select **Code → Download ZIP** on this repository, then choose **Extract All** into a new folder. Do not run it from inside the ZIP or overwrite your existing installation.
-2. Use a working Python **3.11 or newer** installation.
-3. On Windows, open the extracted folder containing `start.py` and double-click **START_WINDOWS.bat**. The launcher checks installed interpreters and skips broken or unsupported ones.
-4. Open [http://127.0.0.1:8787](http://127.0.0.1:8787) in your browser.
-
-Keep the application process running for automatic updates. Initial imports can take several minutes. No third-party Python packages, Node.js installation, or external database service are needed to run XploitAtlas.
-
-For Linux/macOS, run `python3 start.py` from the extracted project folder. Read [RUN_ME_FIRST.md](RUN_ME_FIRST.md) for first-run troubleshooting and [the technical guide](docs/TECHNICAL_GUIDE.md) for Docker, configuration, source coverage, APIs, and development checks.
-
-## Included in the download
-
-| Files | Purpose |
+| Source-aware record investigation | Guided investigation lab |
 | --- | --- |
-| `START_WINDOWS.bat`, `start.py` | Windows launcher and cross-platform entry point, together at the project root. |
-| Python modules and `static/` | Source ingestion, storage, HTTP API, interface, and local graphics. |
-| `RUN_ME_FIRST.md`, `docs/TECHNICAL_GUIDE.md` | Setup, troubleshooting, configuration, architecture, sources, and validation. |
-| `docs/screenshots/` | Actual frontend captures and screenshot provenance. |
-| `LICENSE`, `SECURITY.md`, `CONTRIBUTING.md` | License, security boundaries, and contribution guidance. |
-| `Dockerfile`, `compose.yaml` | Optional local Docker deployment with persistent storage. |
-| `tests/`, `source_package.py` | Project checks and complete source-download packaging. |
+| ![MasterMonk record evidence workspace](docs/screenshots/mastermonk-3.2/05-record-evidence.png) | ![MasterMonk guided investigation lab](docs/screenshots/mastermonk-3.2/07-investigation-lab.png) |
 
-This version is a local, single-user application with bounded source coverage. Built-in accounts, tenant isolation, asset/SBOM matching, alert delivery, and a complete historical CVE backfill are not included. Do not expose its HTTP server directly to the internet.
+### See what changed—and open the records behind it
 
-## Open source
+| Provider publication timeline | Saved evidence change stream |
+| --- | --- |
+| ![MasterMonk change intelligence timeline](docs/screenshots/mastermonk-3.2/08-change-intelligence.png) | ![MasterMonk saved evidence change stream](docs/screenshots/mastermonk-3.2/09-change-stream.png) |
 
-XploitAtlas is [MIT licensed](LICENSE). The bundled, unmodified [IBM Plex fonts](static/fonts/README.md) retain their [SIL Open Font License](static/fonts/OFL.txt). See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and [SECURITY.md](SECURITY.md) for security boundaries. Upstream intelligence retains each provider's terms and attribution.
+<details>
+<summary><strong>More 3.2.0 interface captures</strong></summary>
+
+#### Discover: live catalog cards and source health
+
+![MasterMonk live Discover catalog](docs/screenshots/mastermonk-3.2/04-discover-live-catalog.png)
+
+#### Continue from the evidence record into Learn or publisher details
+
+![MasterMonk record actions](docs/screenshots/mastermonk-3.2/06-record-actions.png)
+
+</details>
+
+## Start locally
+
+1. Download and extract the complete project into a new folder.
+2. Stop any older MasterMonk process that is already using port `8787`.
+3. Start the application:
+   - **Windows:** double-click `START_WINDOWS.bat`.
+   - **macOS:** open `START_MACOS.command`, or run `sh START.sh` in Terminal.
+   - **Linux:** run `sh START.sh`.
+4. Open [http://127.0.0.1:8787](http://127.0.0.1:8787).
+5. Keep the terminal open while using MasterMonk. Discover is public by default; administration is optional.
+
+Graphics, fonts, Three.js, and the Waitress web server are bundled. A normal local run does not require npm or pip. If port `8787` is occupied, stop the other copy or run `python start.py --port 8788`. If an old interface remains cached, reload once with `Ctrl+F5`.
+
+### Install on Android, iPhone, iPad, or desktop
+
+The installed app is a client for the same running MasterMonk server; it is not a separate database. Make the server reachable through an HTTPS address, open that address on the device, then:
+
+- **Android / Chrome:** choose **Install app**, or use MasterMonk’s **Install** button.
+- **iPhone or iPad / Safari:** choose **Share → Add to Home Screen**.
+- **Desktop Chrome or Edge:** use the install icon or MasterMonk’s **Install** button.
+
+The service worker caches only the application shell and bundled graphics. API responses, vulnerability records, sessions, feeds, and private workspaces are not cached. Offline, MasterMonk reports that its server is unavailable instead of presenting an old catalog as current.
+
+## Product map
+
+| View | What it does |
+| --- | --- |
+| **Discover** | Shows the newest collected disclosures, recent CISA KEV additions, provider state, and direct CVE or GHSA lookup. |
+| **Universe** | Maps real collected records into a full-screen 3D evidence field. Core shape/color represents severity, size represents CVSS, corona represents EPSS, red orbit marks KEV, and satellites identify collected providers. |
+| **Intelligence** | Searches and sorts the catalog by priority, severity, publication period, KEV status, score, and source coverage. |
+| **Compare** | Compares two exact ecosystem/package/version identities with current OSV evidence and generates public SVG badges. |
+| **Changes** | Contrasts provider dates with local observations, compares two UTC dates, and opens the records behind changed counts. |
+| **Sources** | Reports real provider status, last response, collected coverage, daily EPSS updates, and optional historical-import progress. |
+| **Learn** | Turns the selected record into a four-stage investigation covering disclosure, severity, exploitation evidence, and response. |
+| **Highlights** | Lets signed-in users curate up to 24 collected records and notes into a revocable shareable briefing. |
+
+Each record can expose **Overview**, **Sources & evidence**, **Affected software & fixes**, **3D evidence graph**, **Weakness & techniques**, **Saved history**, and an optional **AI reading aid**.
+
+## Evidence rules
+
+- The catalog begins empty and imports provider responses; no saved catalog is included in the source archive.
+- CISA KEV is collected as a complete catalog. NVD and GitHub Advisories use incremental recent windows; older NVD history is an optional resumable import.
+- FIRST’s daily EPSS snapshot enriches matching tracked CVEs.
+- Publisher detail fetches use CVE/CNA and available OSV advisory evidence for the selected identifier.
+- Unknown, missing, incomplete, or unavailable evidence remains labelled that way.
+- Newly indexed means first saved by this MasterMonk instance; it does not necessarily mean newly disclosed.
+- Priority is a calculated triage aid, not a source claim and not proof that a system is affected.
+- CWE → CAPEC → ATT&CK paths are published class-level associations, not proof of how a particular vulnerability was exploited.
+- Remediation-field changes are evidence changes, not proof that a user’s system was patched.
+
+The browser checks for saved catalog revisions every 15 seconds, and the embedded collector starts a bounded public-source pass every 15 minutes by default. Provider schedules, rate limits, failures, and response time determine when evidence arrives. MasterMonk is continuously refreshed while running; it does not claim instantaneous streaming.
+
+## Universe controls and encodings
+
+The Universe owns the browser viewport. **Open instruments** slides in search, severity, KEV, grouping, graphics quality, the legend, and routes back to the other workspaces. **Home** restores the overview, **Pause motion** stops ambient movement, the mini-map shows camera orientation, and the arrow pad provides precise movement on touch screens.
+
+Rendering modes deliberately differ:
+
+- **3D · Survey:** quiet wide view, lowest cost, no EPSS halos.
+- **3D · Orbital:** EPSS coronas at or above 5%, moderate glow, and light clouds.
+- **3D · Deep field:** denser clouds, stronger bloom, and every available EPSS corona.
+- **Canvas · 2D fallback:** retains access to the real catalog when WebGL2 is unavailable.
+
+Arrange systems by **company**, **weakness type (CWE)**, **severity**, or **collected source**. The display is bounded at 10,000 records for browser performance; Intelligence pages through the complete local catalog.
+
+## Component evidence and public badges
+
+Compare accepts supported OSV ecosystems, package names, and exact versions. It separates advisory identities into component A only, both components, and component B only. A one-sided match can reflect version applicability, different packages, aliases, pagination, or upstream coverage; it does not by itself prove remediation or relative safety.
+
+Badge URLs contain the public ecosystem, package name, and exact version. They use the same OSV query path as Compare, cache the current result for five minutes, and show explicit unavailable or incomplete states. Do not place confidential component identities in a public badge URL.
+
+## Optional administration and AI
+
+Public browsing and learning do not require an account. Administration provides saved watches, private package checks, highlights, collection controls, and account settings. Create the first administrator only with the expiring setup code printed by the local server.
+
+AI is off until an operator configures a chat-completions-compatible endpoint and model. AI text is labelled **AI-written**, kept separate from collected evidence, and includes source links from the record. No model or paid service is bundled, and MasterMonk does not substitute invented text if generation fails. See [AI configuration](docs/OPERATIONS.md#optional-ai-reading-aid).
+
+## Command-line use
+
+```bash
+# Start the local web application
+python mastermonk.py serve
+
+# Collect from configured public sources
+python mastermonk.py sync --sources cisa,github,nvd,epss
+
+# Scan a dependency manifest and write neutral SARIF
+python mastermonk.py scan requirements.txt --format sarif --output mastermonk.sarif
+
+# Build a public static catalog snapshot
+python mastermonk.py export-site --data-dir .catalog-data --output _site --base-url https://example.invalid
+```
+
+Configuration, Docker, reverse-proxy guidance, source behavior, highlights, AI setup, and upgrade instructions are in [docs/OPERATIONS.md](docs/OPERATIONS.md).
+
+## Verification
+
+```bash
+python -E -m unittest discover -s tests -v
+python -E tools/verify.py
+```
+
+The isolated suite exercises priority mathematics, CAPEC parsing primitives, dependency parsing, badge wording, and SARIF metadata. The full verifier checks Python syntax, JavaScript syntax and Three.js exports, vendored-asset integrity, PWA files, source packaging, empty startup, authentication boundaries, key API routes, and a fresh extracted download. An opt-in live run checks the project’s actual dependency manifest against current CISA and OSV services:
+
+```bash
+python -E tools/verify.py --live
+```
+
+Live-source results are observations from the time of the run and are not embedded in the project.
+
+## Security, privacy, and licensing
+
+MasterMonk binds to `127.0.0.1` by default. Expose it only through a deployment you control with HTTPS, persistent storage, trusted proxy settings, and a strong administrator password. Runtime databases, imported manifests, source payloads, accounts, sessions, API keys, and `.env` files are excluded from the public source package.
+
+Read [SECURITY.md](SECURITY.md) before a shared deployment. MasterMonk is [MIT licensed](LICENSE); provider data and bundled dependencies retain their own attribution and terms in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

@@ -16,8 +16,9 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import adapters
 from core import CVE_RE, GHSA_RE, SOURCE_META, now, merge
+from config import setting
 
-LOG = logging.getLogger("vulnorbit")
+LOG = logging.getLogger("mastermonk")
 HOSTS = {"www.cisa.gov", "raw.githubusercontent.com", "services.nvd.nist.gov",
          "api.first.org", "api.github.com", "cveawg.mitre.org", "api.osv.dev"}
 MAX_BYTES = 32 * 1024 * 1024
@@ -45,14 +46,14 @@ class Client:
         self.opener = urllib.request.build_opener(NoRedirect)
         self.host_locks = {h: threading.Lock() for h in HOSTS}
         self.last_request = {}
-        self.nvd_key = os.getenv("NVD_API_KEY", "").strip()
-        self.github_token = os.getenv("GITHUB_TOKEN", "").strip()
+        self.nvd_key = setting("NVD_API_KEY", os.getenv("NVD_API_KEY", "")).strip()
+        self.github_token = setting("GITHUB_TOKEN", os.getenv("GITHUB_TOKEN", "")).strip()
 
     def get(self, url, source, body=None, capture=True):
         p = urllib.parse.urlsplit(url)
         if p.scheme != "https" or p.hostname not in HOSTS or p.username or p.password:
             raise FeedError("Unsupported source address.")
-        headers = {"Accept": "application/json", "User-Agent": "XploitAtlas/1.0 (open-source vulnerability observatory)"}
+        headers = {"Accept": "application/json", "User-Agent": "MasterMonk/3.2 (open-source vulnerability observatory)"}
         if p.hostname == "services.nvd.nist.gov" and self.nvd_key:
             headers["apiKey"] = self.nvd_key
         if p.hostname == "api.github.com" and self.github_token:
@@ -118,7 +119,7 @@ class Ingestor:
     def start(self):
         if self.thread and self.thread.is_alive():
             return
-        self.thread = threading.Thread(target=self._loop, name="vulnorbit-scheduler", daemon=True)
+        self.thread = threading.Thread(target=self._loop, name="mastermonk-scheduler", daemon=True)
         self.thread.start()
 
     def close(self):
@@ -160,7 +161,7 @@ class Ingestor:
             LOG.warning("%s unavailable: %s", source, exc)
             return False
 
-    def sync(self):
+    def sync(self, sources=None):
         if not self.lock.acquire(blocking=False):
             return False
         self.running = True
@@ -171,6 +172,8 @@ class Ingestor:
             for name, callback in (("cisa", self._cisa), ("github", self._github), ("nvd", self._nvd), ("epss", self._epss)):
                 if self.stop_event.is_set():
                     break
+                if sources is not None and name not in sources:
+                    continue
                 if self._source(name, callback):
                     succeeded.append(name)
             completed = now()
@@ -274,24 +277,8 @@ class Ingestor:
                           coverage=f"{len(signals)} advisories on this page. {'More pages queued.' if next_url else 'Current modified window complete.'}")
 
     def _epss(self):
-        ids = self.store.ids()
-        if not ids:
-            self.store.health("epss", state="pending", message="Waiting for real CVE records from a catalog source.")
-            return
-        start = self.store.state("epss_cursor", 0)
-        if start >= len(ids):
-            start = 0
-        chosen = ids[start:start+1000]
-        combined = []
-        for offset in range(0, len(chosen), 100):
-            group = chosen[offset:offset+100]
-            url = "https://api.first.org/data/v1/epss?" + urllib.parse.urlencode({"limit": 100, "cve": ",".join(group)})
-            response = self.client.get(url, "epss")
-            combined.extend(adapters.epss(response.data, response.observed_at, url))
-        checkpoint = {"epss_cursor": 0 if start + len(chosen) >= len(ids) else start + len(chosen)}
-        self.store.ingest("epss", combined, checkpoint=checkpoint)
-        self.store.health("epss", message="Daily scores saved. Missing responses are not converted to zero.",
-                          coverage=f"Rotating sweep: {len(chosen)} of {len(ids)} CVEs queried this cycle, {len(combined)} scores supplied.")
+        from epss_bulk import refresh
+        return refresh(self)
 
     def enrich(self, identifier, osv_id=None):
         if not (CVE_RE.fullmatch(identifier) or GHSA_RE.fullmatch(identifier)):

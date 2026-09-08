@@ -6,7 +6,7 @@ if not exist "start.py" goto :missing_start
 
 rem Enumerate installed versions instead of trusting the default py -3.
 rem Both the legacy launcher and Python install manager support py -0p.
-set "VULNORBIT_PY_COMMAND="
+set "MASTERMONK_PY_COMMAND="
 for /f "tokens=1" %%V in ('py -0p 2^>nul') do (
   call :try_registered_python "%%V"
   if errorlevel 0 if not errorlevel 1 goto :python_ready
@@ -21,26 +21,26 @@ goto :python_missing
 
 :python_ready
 echo Using:
-%VULNORBIT_PY_COMMAND% -E -c "import sys; print(sys.executable); print('Python ' + sys.version.split()[0])"
+%MASTERMONK_PY_COMMAND% -E -c "import sys; print(sys.executable); print('Python ' + sys.version.split()[0])"
 if not "%errorlevel%"=="0" goto :python_missing
 if /i "%~1"=="--check-python" exit /b 0
 
 echo.
-echo Starting XploitAtlas. Default address: http://127.0.0.1:8787
+echo Starting MasterMonk. Default address: http://127.0.0.1:8787
 echo Open the address printed by the server in your browser.
 echo Keep this window open for real-source updates. Press Ctrl+C to stop.
 echo.
-%VULNORBIT_PY_COMMAND% -E start.py %*
-set "VULNORBIT_EXIT_CODE=%errorlevel%"
-if "%VULNORBIT_EXIT_CODE%"=="0" exit /b 0
+%MASTERMONK_PY_COMMAND% -E start.py %*
+set "MASTERMONK_EXIT_CODE=%errorlevel%"
+if "%MASTERMONK_EXIT_CODE%"=="0" exit /b 0
 echo.
-echo XploitAtlas stopped with an error. Read the message above.
-echo If the port is already in use, close the other XploitAtlas process first.
+echo MasterMonk stopped with an error. Read the message above.
+echo If the port is already in use, close the other MasterMonk process first.
 if "%~1"=="" pause
-exit /b %VULNORBIT_EXIT_CODE%
+exit /b %MASTERMONK_EXIT_CODE%
 
 :folder_error
-echo ERROR: The XploitAtlas folder could not be opened.
+echo ERROR: The MasterMonk folder could not be opened.
 goto :failed
 
 :missing_start
@@ -60,16 +60,16 @@ if "%~1"=="" pause
 exit /b 1
 
 :try_registered_python
-set "VULNORBIT_SELECTOR=%~1"
+set "MASTERMONK_SELECTOR=%~1"
 rem Ignore informational headings, which do not start with a selector dash.
-if not "%VULNORBIT_SELECTOR:~0,1%"=="-" exit /b 1
-py "%VULNORBIT_SELECTOR%" -E -c "import sys, encodings, sqlite3, ssl; sys.exit(sys.version_info < (3, 11))" >nul 2>&1
+if not "%MASTERMONK_SELECTOR:~0,1%"=="-" exit /b 1
+py "%MASTERMONK_SELECTOR%" -E -c "import sys, encodings, sqlite3, ssl; sys.exit(sys.version_info < (3, 11))" >nul 2>&1
 if not "%errorlevel%"=="0" exit /b 1
-set "VULNORBIT_PY_COMMAND=py "%VULNORBIT_SELECTOR%""
+set "MASTERMONK_PY_COMMAND=py "%MASTERMONK_SELECTOR%""
 exit /b 0
 
 :try_python_exe
 "%~1" -E -c "import sys, encodings, sqlite3, ssl; sys.exit(sys.version_info < (3, 11))" >nul 2>&1
 if not "%errorlevel%"=="0" exit /b 1
-set "VULNORBIT_PY_COMMAND="%~1""
+set "MASTERMONK_PY_COMMAND="%~1""
 exit /b 0

@@ -11,3 +11,7 @@ node_modules/
 *.db
 *.log
 *.zip
+_site/
+.catalog-data/
+dist/
+.coverage

@@ -84,11 +84,14 @@ def github(data, observed, url):
         metric_options = [(g.get("cvss_severities") or {}).get("cvss_v4") or {},
                           (g.get("cvss_severities") or {}).get("cvss_v3") or {}, g.get("cvss") or {}]
         metric = next((m for m in metric_options if number(m.get("score")) is not None), {})
+        weaknesses = [{"id": c.get("cwe_id"), "name": text(c.get("name"), 240)}
+                      for c in array(g.get("cwes")) if isinstance(c, dict)]
         r.update(title=text(g.get("summary"), 500), description=text(g.get("description")),
                  published=timestamp(g.get("published_at")), modified=timestamp(g.get("updated_at")),
                  cvss=number(metric.get("score")), vector=text(metric.get("vector_string")) or None,
                  vendor=packages[0]["ecosystem"] if packages else "", product=packages[0]["name"] if packages else "",
-                 cwes=[c.get("cwe_id") for c in array(g.get("cwes"))], withdrawn=bool(g.get("withdrawn_at")),
+                 cwes=[c.get("id") for c in weaknesses], weaknesses=weaknesses,
+                 withdrawn=bool(g.get("withdrawn_at")),
                  aliases=[i["value"] for i in array(g.get("identifiers")) if isinstance(i.get("value"), str)],
                  packages=packages, references=(refs(g["html_url"], "advisory", "github") +
                  [r for u in array(g.get("references")) for r in refs(u, "reference", "github")])[:40])
@@ -134,13 +137,21 @@ def cve(data, observed, url):
         packages.append({"name": text(p.get("packageName") or p.get("product"), 200),
                          "ecosystem": "Vendor product", "affected": ranges[:2000] or "See publisher record",
                          "fixed": None, "source": "cve", "url": r["url"]})
+    weakness_rows = []
+    for problem in array(cna.get("problemTypes")):
+        for description in array(problem.get("descriptions")):
+            identifier = description.get("cweId")
+            label = text(description.get("description"), 240).strip()
+            if isinstance(identifier, str):
+                label = re.sub(r"^"+re.escape(identifier)+r"\s*[:\-–—]?\s*", "", label, flags=re.I)
+                weakness_rows.append({"id": identifier, "name": label})
     r.update(title=text(cna.get("title"), 500),
              description=next((text(d.get("value")) for d in array(cna.get("descriptions")) if d.get("lang") == "en"), ""),
              published=timestamp(meta.get("datePublished")), modified=timestamp(meta.get("dateUpdated")),
              vendor=text(affected[0].get("vendor"), 160) if affected else "",
              product=text(affected[0].get("product"), 200) if affected else "",
              cvss=number(metric.get("baseScore")), vector=text(metric.get("vectorString")) or None,
-             cwes=[d.get("cweId") for p in array(cna.get("problemTypes")) for d in array(p.get("descriptions"))],
+             cwes=[item.get("id") for item in weakness_rows], weaknesses=weakness_rows,
              withdrawn=meta.get("state") == "REJECTED", references=references[:40], packages=packages[:40])
     return [r]
 

@@ -22,7 +22,7 @@ SOURCE_META = {
 }
 CVE_RE = re.compile(r"^CVE-\d{4}-\d{4,}$")
 GHSA_RE = re.compile(r"^GHSA-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}$")
-FIELDS = ("title", "description", "vendor", "product", "cvss", "vector", "cwes",
+FIELDS = ("title", "description", "vendor", "product", "cvss", "vector", "cwes", "weaknesses",
           "kev", "kevAdded", "ransomware", "requiredAction", "dueDate", "epss",
           "percentile", "epssDate", "packages", "references", "withdrawn", "aliases")
 
@@ -78,33 +78,7 @@ def severity(score):
         return "Unknown"
     return "Critical" if score >= 9 else "High" if score >= 7 else "Medium" if score >= 4 else "Low" if score > 0 else "None"
 
-def priority(v: dict) -> dict:
-    reasons, missing = [], []
-    if v.get("withdrawn"):
-        return {"score": 0, "band": "Verify record",
-                "reasons": [{"label": "The authoritative record is rejected or withdrawn; inspect source status.", "points": 0}],
-                "missing": [], "model": "vulnorbit-1"}
-    if v.get("kev"):
-        reasons.append({"label": "CISA confirms known exploitation", "points": 60})
-    if v.get("ransomware") == "Known":
-        reasons.append({"label": "CISA reports known ransomware use", "points": 10})
-    cvss = number(v.get("cvss"))
-    if cvss is None:
-        missing.append("CVSS")
-    else:
-        reasons.append({"label": f"CVSS {cvss:g} x 2 (rounded)", "points": math.floor(cvss * 2 + 0.5)})
-    epss = number(v.get("epss"), 1)
-    if epss is None:
-        missing.append("EPSS")
-    else:
-        points = 15 if epss >= 0.5 else 10 if epss >= 0.1 else 5 if epss >= 0.01 else 0
-        reasons.append({"label": f"EPSS {epss * 100:.2f}% probability", "points": points})
-    if any(r.get("kind") == "exploit" for r in v.get("references", [])):
-        reasons.append({"label": "Source-tagged exploit reference; not execution-verified", "points": 5})
-    score = min(100, sum(r["points"] for r in reasons))
-    return {"score": score,
-            "band": "Act now" if v.get("kev") else "Investigate" if score >= 30 else "Review" if score >= 14 else "Monitor",
-            "reasons": reasons, "missing": missing, "model": "vulnorbit-1"}
+from prioritization import priority
 
 def merge(signals: list[dict]) -> dict:
     if not signals:
@@ -125,6 +99,20 @@ def merge(signals: list[dict]) -> dict:
         return next((x[field] for x in ordered if x.get(field)), default)
     title = next((x.get("title") for source in ("github", "cve", "cisa", "osv", "nvd")
                   for x in ordered if x["source"] == source and x.get("title")), signals[0]["id"])
+    weakness_values = []
+    for signal in signals:
+        for item in signal.get("weaknesses", []):
+            if not isinstance(item, dict):
+                continue
+            identifier = text(item.get("id"), 24).upper()
+            name = text(item.get("name"), 240).strip()
+            if re.fullmatch(r"CWE-\d+", identifier):
+                weakness_values.append({"id": identifier, "name": name if name and name != identifier else ""})
+    weaknesses = unique(weakness_values, lambda item: item["id"])
+    cwes = sorted({c for x in signals for c in x.get("cwes", [])
+                   if isinstance(c, str) and re.fullmatch(r"CWE-\d+", c)})
+    known_weaknesses = {item["id"] for item in weaknesses}
+    weaknesses.extend({"id": identifier, "name": ""} for identifier in cwes if identifier not in known_weaknesses)
     record = {
         "id": signals[0]["id"], "title": title, "description": pick("description", "No description supplied."),
         "vendor": kev.get("vendor") or pick("vendor", "Unspecified"),
@@ -133,7 +121,7 @@ def merge(signals: list[dict]) -> dict:
         "modified": updates[-1] if updates else None,
         "cvss": number(metric.get("cvss")), "cvssSource": metric.get("source"), "vector": metric.get("vector"),
         "severity": severity(number(metric.get("cvss"))),
-        "cwes": sorted({c for x in signals for c in x.get("cwes", []) if isinstance(c, str) and re.fullmatch(r"CWE-\d+", c)}),
+        "cwes": cwes, "weaknesses": sorted(weaknesses, key=lambda item: item["id"]),
         "kev": kev.get("kev") is True, "kevAdded": kev.get("kevAdded"), "dueDate": kev.get("dueDate"),
         "ransomware": kev.get("ransomware") or "Unknown", "requiredAction": kev.get("requiredAction"),
         "epss": number(ep.get("epss"), 1), "percentile": number(ep.get("percentile"), 1), "epssDate": ep.get("epssDate"),
@@ -156,7 +144,8 @@ def merge(signals: list[dict]) -> dict:
 
 def summary(record):
     keys = ("id", "title", "vendor", "product", "published", "modified", "cvss", "cvssSource",
-            "severity", "cwes", "kev", "kevAdded", "ransomware", "epss", "epssDate", "withdrawn", "aliases")
+            "severity", "cwes", "weaknesses", "kev", "kevAdded", "ransomware", "epss", "epssDate", "withdrawn", "aliases",
+            "firstObserved")
     result = {k: record.get(k) for k in keys}
     result["priority"] = record["priority"]
     result["sourceIds"] = sorted({s["id"] for s in record["sources"]})

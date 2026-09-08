@@ -1,0 +1,41 @@
+name: Publish public catalog snapshot
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.13'
+      - name: Collect real provider data
+        env:
+          MASTERMONK_GITHUB_TOKEN: ${{ github.token }}
+          MASTERMONK_NVD_API_KEY: ${{ secrets.MASTERMONK_NVD_API_KEY }}
+        run: python mastermonk.py sync --data-dir .catalog-data --sources cisa,github,nvd,epss --budget 0
+      - name: Build the public snapshot
+        env:
+          MASTERMONK_PAGES_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+        run: python mastermonk.py export-site --data-dir .catalog-data --output _site --base-url "$MASTERMONK_PAGES_URL"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish
+        id: deployment
+        uses: actions/deploy-pages@v4

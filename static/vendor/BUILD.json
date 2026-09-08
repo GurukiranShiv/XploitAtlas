@@ -1,0 +1,11 @@
+{
+  "library": "three",
+  "version": "0.180.0",
+  "bundler": "esbuild 0.25.10",
+  "source": "https://github.com/mrdoob/three.js/tree/r180",
+  "license": "MIT",
+  "file": "three.js",
+  "bytes": 538090,
+  "sha256": "3b7092e5c8137cecd6c6bd200f6985b5c2bd75f14f5e534ba62e58b13af1e5f1",
+  "rebuild": "npm ci --ignore-scripts && npm run build:vendor"
+}

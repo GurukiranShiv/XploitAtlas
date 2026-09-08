@@ -1,9 +1,14 @@
 {
-  "name": "xploitatlas",
+  "name": "mastermonk",
+  "version": "3.2.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tests/ui.test.js tests/style.test.js",
-    "check": "node --check static/app.js && node --check static/universe.js && node --check static/ui.js"
+    "check": "node --check static/app.js && node --check static/osint.js && node --check static/universe.js && node --check static/universe-webgl.js && node --check static/ui.js",
+    "build:vendor": "node tools/build-graphics.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10",
+    "three": "0.180.0"
   }
 }

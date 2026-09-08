@@ -1,14 +1,37 @@
+x-settings: &settings
+  MASTERMONK_DATA_DIR: /data
+  MASTERMONK_BASE_URL: ${MASTERMONK_BASE_URL:-http://127.0.0.1:8787}
+  MASTERMONK_PUBLIC_CATALOG: ${MASTERMONK_PUBLIC_CATALOG:-0}
+  MASTERMONK_NVD_API_KEY: ${MASTERMONK_NVD_API_KEY:-}
+  MASTERMONK_GITHUB_TOKEN: ${MASTERMONK_GITHUB_TOKEN:-}
+  MASTERMONK_INTERVAL: ${MASTERMONK_INTERVAL:-900}
+  MASTERMONK_SMTP_HOST: ${MASTERMONK_SMTP_HOST:-}
+  MASTERMONK_SMTP_PORT: ${MASTERMONK_SMTP_PORT:-587}
+  MASTERMONK_SMTP_USER: ${MASTERMONK_SMTP_USER:-}
+  MASTERMONK_SMTP_PASSWORD: ${MASTERMONK_SMTP_PASSWORD:-}
+  MASTERMONK_SMTP_FROM: ${MASTERMONK_SMTP_FROM:-}
+  MASTERMONK_SMTP_SSL: ${MASTERMONK_SMTP_SSL:-0}
+  MASTERMONK_WEBHOOK_SECRET: ${MASTERMONK_WEBHOOK_SECRET:-}
 services:
-  vulnorbit:
+  web:
     build: .
+    environment:
+      <<: *settings
+      MASTERMONK_SYNC_MODE: external
+      MASTERMONK_TRUSTED_PROXY: ${MASTERMONK_TRUSTED_PROXY:-}
     ports:
       - "127.0.0.1:8787:8787"
-    environment:
-      VULNORBIT_INTERVAL: "900"
-      NVD_API_KEY: "${NVD_API_KEY:-}"
-      GITHUB_TOKEN: "${GITHUB_TOKEN:-}"
     volumes:
-      - intelligence:/app/runtime
+      - intelligence:/data
+    restart: unless-stopped
+  collector:
+    build: .
+    command: ["python", "mastermonk.py", "worker"]
+    environment: *settings
+    volumes:
+      - intelligence:/data
+    healthcheck:
+      disable: true
     restart: unless-stopped
 volumes:
   intelligence:

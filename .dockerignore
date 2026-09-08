@@ -12,3 +12,7 @@ node_modules
 *.log
 *.zip
 .git
+_site
+.catalog-data
+dist
+tests

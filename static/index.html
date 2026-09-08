@@ -2,107 +2,143 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#163047">
-  <meta name="description" content="XploitAtlas helps you understand vulnerabilities, why they matter, and what to prioritize with real-source intelligence and an interactive 3D universe.">
-  <title>XploitAtlas — Vulnerability intelligence</title>
-  <link rel="icon" type="image/svg+xml" href="/static/mark.svg">
-  <link rel="preload" href="/static/fonts/IBMPlexSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/static/fonts/IBMPlexSerif-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/static/style.css?v=atlas-1">
-  <script type="module" src="/static/app.js?v=atlas-1"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Explore new CVEs from public sources, investigate their evidence in 3D, and learn what vulnerabilities tell you with MasterMonk.">
+  <meta name="theme-color" content="#05071b">
+  <meta name="color-scheme" content="light dark">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MasterMonk">
+  <title>MasterMonk · Vulnerability intelligence</title>
+  <link rel="icon" href="/static/icons/favicon-64.png" type="image/png">
+  <link rel="apple-touch-icon" href="/static/icons/mastermonk-192.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/cosmos.css">
+  <script type="module" src="/static/app.js"></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to intelligence</a>
-  <header class="topbar">
-    <a class="brand" href="#universe" aria-label="XploitAtlas home"><img src="/static/mark.svg" alt="" width="36" height="36"><span>Xploit<span class="accent">Atlas</span><small>OPEN INTELLIGENCE</small></span></a>
-    <nav class="nav" aria-label="Main navigation">
-      <button type="button" data-view="universe" class="nav-link active" aria-current="page">Universe</button>
-      <button type="button" data-view="intelligence" class="nav-link">Intelligence</button>
-      <button type="button" data-view="changes" class="nav-link">Changes</button>
-      <button type="button" data-view="packages" class="nav-link">Packages</button>
-      <button type="button" data-view="sources" class="nav-link">Sources</button>
-      <button type="button" data-view="learn" class="nav-link">Learn</button>
-    </nav>
-    <div class="header-actions"><a class="icon-button source-link" href="/api/source" title="Download the open-source project" aria-label="Download the open-source project"><span data-icon="code"></span></a><button id="refresh" class="button compact"><span data-icon="refresh"></span><span>Sync feeds</span></button></div>
-  </header>
-  <main id="main" class="shell">
-    <section class="intro">
-      <div><div class="eyebrow"><span class="tiny-orbit"></span> VULNERABILITY OBSERVATORY <span class="eyebrow-divider">/</span> <span id="today"></span></div>
-      <h1>Xploit<span>Atlas</span></h1>
-      <p>Helping you understand vulnerabilities, why they matter, and what to prioritize.</p></div>
-      <div class="connection"><span id="connection-dot" class="status-dot pending"></span><div><strong id="connection-title">Connecting to your catalog</strong><small id="connection-detail">Real sources · no generated records</small></div></div>
-    </section>
-    <div id="global-notice" class="notice" role="status" hidden></div>
-    <section class="stats" aria-label="Current local catalog statistics">
-      <article class="stat"><div class="stat-label">Vulnerabilities tracked <span data-icon="nodes"></span></div><div class="stat-value" id="stat-total">—</div><div class="stat-note">Unique records in your catalog</div></article>
-      <article class="stat"><div class="stat-label">Known exploited <span class="coral" data-icon="target"></span></div><div class="stat-value coral" id="stat-kev">—</div><div class="stat-note">Confirmed in the CISA KEV catalog</div></article>
-      <article class="stat"><div class="stat-label">Critical severity <span class="purple" data-icon="shield"></span></div><div class="stat-value" id="stat-critical">—</div><div class="stat-note">Source-reported CVSS ≥ 9.0</div></article>
-      <article class="stat"><div class="stat-label">Published this week <span class="accent" data-icon="spark"></span></div><div class="stat-value" id="stat-new">—</div><div class="stat-note">Tracked records · rolling seven days</div></article>
-    </section>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="masthead">
+  <a class="brand" href="#discover"><img src="/static/media/mastermonk-logo.png" width="66" height="38" alt=""><span>MasterMonk<small>OPEN-SOURCE VULNERABILITY INTELLIGENCE</small></span></a>
+  <div class="header-actions"><button type="button" id="install-app-button" data-action="install-app" class="install-app-button" hidden>Install</button><button type="button" data-action="help" class="quiet">Read the evidence</button><button type="button" id="account-button" data-action="account" class="account-button">Connecting…</button></div>
+</header>
+<div id="connection-error" class="notice error" role="alert" hidden></div>
+<section id="auth-view" class="auth-view" hidden>
+  <div class="auth-intro"><span class="kicker">OPTIONAL INSTANCE ADMINISTRATION</span><h1>Keep exploring.<br>Manage when needed.</h1><p>Discover vulnerabilities, open source evidence, and follow the Learn walkthrough without uploading a file.</p><div class="intro-rule"></div><p class="muted">Accounts provide administration, saved watches, and private package tools.</p></div>
+  <div class="auth-panel"><h2 id="auth-title">Sign in</h2><p id="auth-description" class="muted"></p>
+    <form id="auth-form">
+      <label id="setup-field" hidden>First-run setup code<input name="setupCode" autocomplete="off" spellcheck="false"><small>Shown in the terminal that started MasterMonk. Valid for 30 minutes.</small></label>
+      <label>Username<input name="username" required minlength="3" maxlength="40" autocomplete="username" autocapitalize="none" spellcheck="false"></label>
+      <label>Password<input name="password" type="password" required minlength="15" maxlength="128" autocomplete="current-password"></label>
+      <p id="auth-error" class="form-error" role="alert"></p>
+      <button type="submit" class="primary full" id="auth-submit">Sign in</button>
+    </form>
+    <button type="button" id="browse-public" data-action="browse-public" class="quiet full" hidden>Explore the public catalog</button>
+  </div>
+</section>
+<div id="application" hidden>
+  <nav class="navigation" aria-label="Main navigation">
+    <a href="#discover" data-view="discover"><span data-icon="search"></span>Discover</a>
+    <a href="#universe" data-view="universe"><span data-icon="orbit"></span>Universe</a>
+    <a href="#catalog" data-view="catalog"><span data-icon="list"></span>Intelligence</a>
+    <a href="#components" data-view="components"><span data-icon="package"></span>Compare</a>
+    <a href="#changes" data-view="changes"><span data-icon="clock"></span>Changes</a>
+    <a href="#highlights" data-view="highlights" data-auth-only hidden><span data-icon="spark"></span>Highlights</a>
+    <a href="#sources" data-view="sources"><span data-icon="fingerprint"></span>Sources</a>
+    <a href="#learn" data-view="learn"><span data-icon="spark"></span>Learn</a>
+  </nav>
+  <main id="main" tabindex="-1">
+    <header class="page-heading"><div><span id="view-kicker" class="kicker"></span><h1 id="view-title"></h1><p id="view-description" class="muted"></p></div><div id="view-actions" class="button-row"></div></header>
+    <div id="view" aria-live="polite"></div>
+    <section id="universe-view" class="cosmos-shell" hidden>
+      <div class="universe-stage">
+        <canvas id="universe" tabindex="0" aria-label="Vulnerability evidence universe. Drag to orbit, scroll to travel, and select an object to investigate its collected evidence. Arrow keys rotate, plus and minus zoom, Space pauses, and Home resets."></canvas>
+        <div class="cosmos-atmosphere" aria-hidden="true"></div>
+        <div class="cosmos-warp" aria-hidden="true"><span>TRAVERSING TO SELECTED OBSERVATION</span></div>
+        <div id="vendor-labels" aria-hidden="true"></div>
+        <div id="universe-tooltip" class="universe-tooltip" hidden></div>
 
-    <section id="view-universe" class="view">
-      <div class="section-heading"><div><span class="eyebrow muted">01 / EXPLORE</span><h2>Your vulnerability universe</h2></div><div class="segmented" aria-label="Visualization"><button class="active" data-mode="space" aria-pressed="true"><span data-icon="orbit"></span>3D universe</button><button data-mode="table" aria-pressed="false"><span data-icon="list"></span>Table</button></div></div>
-      <form id="filters" class="filters" role="search">
-        <label class="search"><span data-icon="search"></span><span class="sr-only">Search CVE, vendor, product, or CWE</span><input id="search" name="q" type="search" placeholder="Search CVE, vendor, product, or CWE…" autocomplete="off" maxlength="200"><kbd>/</kbd></label>
-        <label class="select-wrap"><span class="sr-only">Severity</span><select name="severity" id="severity"><option value="all">All severities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option><option>None</option><option>Unknown</option></select></label>
-        <label class="select-wrap"><span class="sr-only">Publication window</span><select name="days" id="days"><option value="0">All tracked time</option><option value="1">Published · 24 hours</option><option value="7">Published · 7 days</option><option value="30">Published · 30 days</option><option value="90">Published · 90 days</option><option value="365">Published · 1 year</option></select></label>
-        <label class="check-filter"><input id="kev-only" name="kev" type="checkbox"><span class="status-dot coral-bg"></span>Known exploited</label>
-        <button type="button" class="icon-button" id="reset-filters" title="Reset filters" aria-label="Reset filters"><span data-icon="reset"></span></button>
-      </form>
-      <div class="explore-layout">
-        <section id="universe-panel" class="universe-panel panel" aria-label="Interactive vulnerability visualization">
-          <div class="canvas-topline"><span><span class="status-dot accent-bg"></span><strong id="node-count">0</strong> real records <span id="subset-note" class="muted"></span></span><span class="micro">VENDOR CONSTELLATIONS</span></div>
-          <div id="canvas-wrap" class="canvas-wrap"><canvas id="universe" tabindex="0" aria-label="3D vulnerability universe. Drag to orbit, scroll or press plus and minus to zoom, arrow keys to rotate. Use Table for a keyboard-accessible record list."></canvas><div id="canvas-tooltip" class="canvas-tooltip" hidden></div><div id="canvas-empty" class="canvas-empty"><span class="empty-orbit" aria-hidden="true"></span><h3>Waiting for the first source</h3><p>Real vulnerabilities will appear as feeds respond.<br>No sample dataset is loaded.</p><button class="button subtle" data-view="sources">See source status <span data-icon="arrow"></span></button></div></div>
-          <div class="canvas-controls"><span class="micro gesture-hint">DRAG TO ORBIT <span>·</span> SCROLL TO ZOOM <span>·</span> SELECT TO INVESTIGATE</span><div><button class="icon-button" id="zoom-in" title="Zoom in" aria-label="Zoom in"><span data-icon="plus"></span></button><button class="icon-button" id="zoom-out" title="Zoom out" aria-label="Zoom out"><span data-icon="minus"></span></button><button class="icon-button" id="reset-camera" title="Reset camera" aria-label="Reset camera"><span data-icon="reset"></span></button><button class="icon-button" id="motion" title="Pause orbit" aria-label="Pause orbit" aria-pressed="false"><span data-icon="pause"></span></button><button class="icon-button" id="fullscreen" title="Expand universe" aria-label="Expand universe"><span data-icon="expand"></span></button></div></div>
-          <div class="legend"><span><i class="coral-bg"></i>Known exploited</span><span><i class="purple-bg"></i>Critical</span><span><i class="amber-bg"></i>High</span><span><i class="blue-bg"></i>Medium / low</span><span><i class="gray-bg"></i>Unknown</span><button class="text-button" data-view="learn">How to read this <span data-icon="arrow"></span></button></div>
-          <p class="canvas-caption">Each point is a real vulnerability. Size reflects CVSS; color gives KEV precedence. Shared vendors form clusters. Position and distance are visual layout, not measured risk.</p>
+        <header class="cosmos-header">
+          <a class="cosmos-brand" href="#discover" aria-label="Leave the universe and return to Discover">
+            <img src="/static/media/mastermonk-logo.png" width="56" height="32" alt="">
+            <span><strong>MASTERMONK</strong><small>EVIDENCE COSMOS</small></span>
+          </a>
+          <div class="cosmos-source-state" title="Actual collection status from configured public sources">
+            <span id="universe-feed-beacon" class="cosmos-beacon waiting" aria-hidden="true"></span>
+            <span><strong id="universe-live-state">Checking source collection…</strong><small id="universe-live-detail">No status received yet</small></span>
+          </div>
+          <div class="cosmos-header-actions">
+            <button type="button" data-action="universe-controls-toggle" id="universe-controls-button" aria-controls="universe-control-panel" aria-expanded="false">Open instruments</button>
+            <button type="button" data-action="universe-fullscreen" id="fullscreen-button">Enter fullscreen</button>
+          </div>
+        </header>
+
+        <div class="cosmos-readout" aria-live="polite">
+          <span id="universe-meta">Loading collected records…</span>
+          <span id="renderer-state" class="renderer-state">Starting renderer…</span>
+        </div>
+
+        <div class="cosmos-camera-controls" aria-label="Universe camera controls">
+          <button type="button" data-action="universe-pause" id="motion-button">Pause</button>
+          <button type="button" data-action="universe-reset">Home</button>
+          <button type="button" data-action="universe-zoom-in" aria-label="Travel closer">+</button>
+          <button type="button" data-action="universe-zoom-out" aria-label="Travel farther">−</button>
+        </div>
+
+        <section class="cosmos-orientation" aria-label="Universe orientation">
+          <canvas id="universe-minimap" width="176" height="126" aria-label="Mini-map showing the camera and visible systems"></canvas>
+          <div><strong>FIELD MAP</strong><span id="universe-axis">Camera at home</span></div>
         </section>
-        <section id="inline-table-panel" class="panel" hidden><div class="panel-heading"><h3>Matching intelligence</h3><span id="inline-count" class="pill"></span></div><div id="inline-table"></div><div class="table-pagination"><button class="button subtle" id="inline-prev">Previous</button><span id="inline-page" class="muted"></span><button class="button subtle" id="inline-next">Next</button></div></section>
-        <aside class="panel radar"><div class="panel-heading"><h3><span class="status-dot coral-bg"></span> Exploitation radar</h3><span class="pill coral-pill">KEV</span></div><p class="panel-description">Most recent additions in the official catalog. Known exploitation is evidence, not a live attack counter.</p><div id="radar-list" class="radar-list"></div><button class="radar-footer text-button" id="see-kev">Explore known exploited <span data-icon="arrow"></span></button></aside>
+
+        <div id="universe-new-observation" class="cosmos-new-observation" role="status" hidden></div>
+
+        <aside id="universe-control-panel" class="cosmos-drawer cosmos-control-deck" aria-label="Universe control deck" aria-hidden="true" inert>
+          <header class="cosmos-drawer-header">
+            <div><span class="cosmos-overline">FIELD INSTRUMENTS</span><h2>Tune the cosmos</h2></div>
+            <button type="button" class="cosmos-close" data-action="universe-controls-close" aria-label="Close control deck">×</button>
+          </header>
+          <form id="universe-filters" class="cosmos-filter-form">
+            <label>Find an observation<input name="q" type="search" placeholder="CVE, vendor, or product" autocomplete="off"></label>
+            <div class="cosmos-filter-grid">
+              <label>Severity<select name="severity"><option value="all">All severities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option><option value="None">None · CVSS 0</option><option>Unknown</option></select></label>
+              <label>Render mode<select id="graphics-quality"><option value="low">3D · Survey</option><option value="balanced" selected>3D · Orbital</option><option value="cinematic">3D · Deep field</option><option value="canvas">Canvas · 2D fallback</option></select></label>
+              <label>Arrange systems by<select name="group"><option value="vendor">Company / vendor</option><option value="weakness">Weakness type (CWE)</option><option value="severity">Severity</option><option value="source">Collected source</option></select></label>
+            </div>
+            <label class="cosmos-switch"><input type="checkbox" name="kev"><span>Show CISA KEV observations only</span></label>
+            <button type="submit" class="cosmos-apply">Retune visible field</button>
+          </form>
+          <p id="renderer-notice" class="cosmos-notice" hidden></p>
+          <p id="universe-error" class="cosmos-notice error" role="alert" hidden></p>
+          <section class="cosmos-key" aria-labelledby="cosmos-key-title">
+            <span id="cosmos-key-title" class="cosmos-overline">SIGNAL LEGEND</span>
+            <div class="legend"><span><i class="legend-critical"></i>Critical</span><span><i class="legend-high"></i>High</span><span><i class="legend-medium"></i>Medium</span><span><i class="legend-low"></i>Low</span><span><i class="legend-none"></i>CVSS 0</span><span><i class="legend-unknown"></i>Unknown</span><span><i class="legend-kev-ring"></i>CISA KEV</span><span><i class="legend-scenery"></i>Cloud scenery</span></div>
+            <p id="universe-encoding">Form and color: severity · Size: CVSS · Corona: EPSS · Systems: shared vendor</p>
+            <p>Clouds and background stars are decorative scenery. Only selectable objects represent collected records. CWE grouping uses the first supplied weakness; inspect a record for all its classifications.</p>
+          </section>
+          <nav class="cosmos-route-links" aria-label="Continue in MasterMonk">
+            <a href="#catalog">Intelligence</a><a href="#changes">Changes</a><a href="#sources">Source health</a><a href="#learn">Investigation lab</a>
+          </nav>
+          <details class="cosmos-record-index"><summary>Records in this field</summary><div id="universe-table"></div></details>
+        </aside>
+
+        <div id="universe-selection" class="universe-selection cosmos-evidence-drawer" aria-live="polite" hidden></div>
+        <div class="cosmos-touch-pad" aria-label="Move around selected star" hidden>
+          <button type="button" data-action="universe-orbit-up" aria-label="Orbit upward">↑</button>
+          <button type="button" data-action="universe-orbit-left" aria-label="Orbit left">←</button>
+          <button type="button" data-action="universe-center-selected" aria-label="Recenter selected star">◎</button>
+          <button type="button" data-action="universe-orbit-right" aria-label="Orbit right">→</button>
+          <button type="button" data-action="universe-orbit-down" aria-label="Orbit downward">↓</button>
+        </div>
+        <p id="universe-empty" class="cosmos-empty" hidden></p>
       </div>
-      <section class="recent-section"><div class="section-heading"><div><span class="eyebrow muted">LATEST SIGNALS</span><h2>Recently published</h2></div><button class="text-button" id="see-recent">View intelligence <span data-icon="arrow"></span></button></div><div class="recent-grid" id="recent-grid"></div></section>
     </section>
-
-    <section id="view-intelligence" class="view" hidden>
-      <div class="section-heading"><div><span class="eyebrow muted">02 / PRIORITIZE</span><h2>Intelligence you can act on</h2><p class="section-description">An explainable triage score combines exploitation evidence, severity, and probability. Your exposure still matters.</p></div><a class="button subtle" href="/api/export?format=csv"><span data-icon="download"></span>Export CSV</a></div>
-      <div class="panel"><div class="table-toolbar"><label class="search"><span data-icon="search"></span><span class="sr-only">Search intelligence</span><input id="table-search" type="search" placeholder="Search all tracked intelligence…" maxlength="200"></label><label class="select-wrap"><span class="sr-only">Sort by</span><select id="sort"><option value="priority">Priority first</option><option value="newest">Newest published</option><option value="cvss">Highest CVSS</option><option value="epss">Highest EPSS</option></select></label><button class="button subtle" id="table-filters">Explore with filters</button><span class="muted" id="table-count"></span></div><div id="intelligence-table"></div><div class="table-pagination"><button class="button subtle" id="table-prev">Previous</button><span id="table-page" class="muted"></span><button class="button subtle" id="table-next">Next</button></div></div>
-      <p class="footnote">A missing metric stays unknown. “Act now” indicates CISA evidence and should be checked against the software you actually run. Export includes the full local catalog.</p>
-    </section>
-
-    <section id="view-changes" class="view" hidden>
-      <div class="section-heading"><div><span class="eyebrow muted">03 / FOLLOW THE EVIDENCE</span><h2>What changed?</h2><p class="section-description">Actual differences between saved source observations, with before-and-after values.</p></div><button class="button subtle" id="reload-changes"><span data-icon="refresh"></span>Refresh history</button></div>
-      <div class="history-note"><span data-icon="clock"></span><p id="history-baseline">History begins when your first real source observations are saved.</p></div>
-      <div id="changes-list" class="changes-list"></div><button class="button subtle" id="more-changes" hidden>Load older changes</button>
-    </section>
-
-    <section id="view-packages" class="view" hidden>
-      <div class="section-heading"><div><span class="eyebrow muted">04 / CHECK YOUR SOFTWARE</span><h2>From a package to a next step</h2><p class="section-description">Query OSV with a package and exact installed version. Inspect affected ranges and published fixes.</p></div><span class="pill"><span class="status-dot accent-bg"></span>OSV API</span></div>
-      <div class="package-layout"><section class="panel package-form-panel"><h3>Check a package</h3><p class="muted">Package name and version are sent to OSV. Query inputs are not logged by XploitAtlas; matching public advisories join your catalog.</p><form id="package-form"><label>Ecosystem<select id="package-ecosystem" required><option>npm</option><option>PyPI</option><option>Maven</option><option>Go</option><option>crates.io</option><option>NuGet</option><option>Packagist</option><option>RubyGems</option></select></label><label>Package name<input id="package-name" placeholder="Enter the exact registry name" maxlength="200" required autocomplete="off"></label><label>Installed version<input id="package-version" placeholder="Enter an exact version" maxlength="100" required autocomplete="off"></label><button type="submit" class="button primary" id="package-submit"><span data-icon="search"></span>Check published advisories</button></form><p class="footnote">No advisory match is not proof of security. Fixed releases may differ by supported branch; read the source before upgrading.</p></section><section class="panel package-results-panel"><div class="panel-heading"><h3>Matching advisories</h3><span id="package-result-count" class="pill">Not queried</span></div><div id="package-results"><div class="empty-state"><span data-icon="package"></span><h3>Start with software you use</h3><p>Your results will come directly from OSV. No example results are preloaded.</p></div></div></section></div>
-    </section>
-
-    <section id="view-sources" class="view" hidden>
-      <div class="section-heading"><div><span class="eyebrow muted">05 / TRUST &amp; PROVENANCE</span><h2>Every signal has a source</h2><p class="section-description">Last successful fetches, current coverage, and upstream failures are visible here.</p></div><a class="button subtle" href="/api/export"><span data-icon="download"></span>Export evidence JSON</a></div>
-      <div id="scheduler-status" class="history-note" role="status" aria-live="polite"></div><div id="sources-grid" class="sources-grid"></div>
-      <div class="method-grid"><article class="panel"><span class="eyebrow accent">DATA CONTRACT</span><h3>Real observations, durable history</h3><p>Imports retain source identities and observation times. SQLite saves the canonical catalog, source versions, and changes together. Raw GET responses are retained for 30 days with SHA-256 fingerprints.</p><p>A failed source preserves the last successful data and exposes its retry time. An empty or malformed KEV response cannot erase the catalog.</p></article><article class="panel"><span class="eyebrow accent">COVERAGE</span><h3>A growing, bounded catalog</h3><p>The full CISA KEV catalog anchors known exploitation. NVD begins with KEV metrics and seven days of published and modified CVEs, then follows both streams. GitHub starts with seven days of reviewed advisory updates.</p><p>Imports are paginated and resumable. EPSS rotates through tracked CVEs. CVE/CNA and OSV enrich records on investigation. This is not a claim to contain every historical vulnerability.</p></article></div>
-    </section>
-
-    <section id="view-learn" class="view" hidden>
-      <div class="section-heading"><div><span class="eyebrow muted">06 / BUILD UNDERSTANDING</span><h2>Read the signal. Understand the risk.</h2><p class="section-description">A guided walkthrough uses a real record from your current catalog. Animation explains the evidence flow.</p></div><button class="button subtle" id="tour-motion"><span data-icon="play"></span><span id="tour-motion-label">Play walkthrough</span></button></div>
-      <div class="learning-layout"><section class="panel learning-flow"><div class="panel-heading"><h3 id="learn-record">Choose a real record</h3><button class="text-button" id="learn-inspect">Investigate <span data-icon="arrow"></span></button></div><div class="flow-track" id="flow-track">
-        <button class="flow-step active" data-step="0"><span class="flow-number">01</span><span><strong>Identity</strong><small>What was disclosed?</small></span><span data-icon="fingerprint"></span></button>
-        <div class="flow-connector" aria-hidden="true"><i></i></div>
-        <button class="flow-step" data-step="1"><span class="flow-number">02</span><span><strong>Impact</strong><small>How severe could it be?</small></span><span data-icon="shield"></span></button>
-        <div class="flow-connector" aria-hidden="true"><i></i></div>
-        <button class="flow-step" data-step="2"><span class="flow-number">03</span><span><strong>Evidence</strong><small>Has exploitation occurred?</small></span><span data-icon="target"></span></button>
-        <div class="flow-connector" aria-hidden="true"><i></i></div>
-        <button class="flow-step" data-step="3"><span class="flow-number">04</span><span><strong>Response</strong><small>What should you verify next?</small></span><span data-icon="wrench"></span></button>
-      </div><p class="footnote">The moving line illustrates an investigation workflow. It does not represent observed attack traffic.</p></section><section class="panel learn-explanation" id="learn-explanation"></section></div>
-      <div class="glossary-grid"><article class="panel"><span class="pill purple-pill">CVSS</span><h3>Severity, not likelihood</h3><p>A standardized technical severity score. The vector describes the conditions behind it. Different sources or CVSS versions may disagree; inspect attribution.</p></article><article class="panel"><span class="pill blue-pill">EPSS</span><h3>Probability, not proof</h3><p>FIRST estimates the probability of exploitation in the next 30 days. The dated score is predictive; a high value is not confirmation of an attack.</p></article><article class="panel"><span class="pill coral-pill">CISA KEV</span><h3>Evidence of exploitation</h3><p>KEV inclusion confirms exploitation in the wild. It does not say that your assets are affected or that an attack is happening right now.</p></article><article class="panel"><span class="pill">EXPLOIT REFERENCES</span><h3>Evidence needs interpretation</h3><p>Source-tagged references can point to public exploit material. XploitAtlas links evidence without executing it or claiming that every reference works.</p></article></div>
-    </section>
-    <footer class="footer"><span><img src="/static/mark.svg" alt="" width="18" height="18">XploitAtlas <span class="muted">/</span> Open-source vulnerability intelligence.</span><div><span class="micro" id="footer-time">UTC · awaiting source observations</span><a href="/api/source">Download source <span data-icon="arrow"></span></a></div></footer>
   </main>
-  <dialog id="record-dialog" aria-labelledby="record-heading"><div id="record-body"></div></dialog>
-  <div id="toast" class="toast" role="status" hidden></div>
+  <footer><span>MasterMonk <span id="version"></span></span><span id="collector-status"></span><button class="quiet" type="button" data-action="tools">Optional tools & administration <span id="unread-count" hidden></span></button></footer>
+</div>
+<dialog id="dialog" aria-labelledby="dialog-title"><header class="dialog-header"><h2 id="dialog-title"></h2><button type="button" data-action="close-dialog" class="icon-button" aria-label="Close dialog"><span data-icon="close"></span></button></header><div id="dialog-content"></div></dialog>
+<div id="toast" class="toast" role="status" hidden></div>
+<noscript><p class="notice">Enable JavaScript to explore the catalog, 3D views, and learning walkthroughs. Public vulnerability pages remain readable without it.</p></noscript>
 </body>
 </html>

@@ -1,0 +1,48 @@
+{
+  "id": "/",
+  "name": "MasterMonk",
+  "short_name": "MasterMonk",
+  "description": "Helping you understand vulnerabilities, why they matter, and what to prioritize.",
+  "start_url": "/#discover",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "background_color": "#05071b",
+  "theme_color": "#05071b",
+  "orientation": "any",
+  "categories": ["security", "utilities", "education"],
+  "icons": [
+    {
+      "src": "/static/icons/mastermonk-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/mastermonk-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Discover new vulnerabilities",
+      "short_name": "Discover",
+      "url": "/#discover",
+      "icons": [{"src": "/static/icons/mastermonk-192.png", "sizes": "192x192", "type": "image/png"}]
+    },
+    {
+      "name": "Explore the evidence universe",
+      "short_name": "Universe",
+      "url": "/#universe",
+      "icons": [{"src": "/static/icons/mastermonk-192.png", "sizes": "192x192", "type": "image/png"}]
+    },
+    {
+      "name": "Open the investigation lab",
+      "short_name": "Learn",
+      "url": "/#learn",
+      "icons": [{"src": "/static/icons/mastermonk-192.png", "sizes": "192x192", "type": "image/png"}]
+    }
+  ]
+}
