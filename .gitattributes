@@ -1,3 +1,7 @@
 * text=auto
 *.bat text eol=crlf
+*.js text eol=lf
+*.mjs text eol=lf
 *.png binary
+*.webp binary
+*.woff2 binary
