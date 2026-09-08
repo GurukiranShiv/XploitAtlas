@@ -12,7 +12,10 @@ def run(command,cwd=ROOT):
     return result.stdout.strip()
 
 def startup(root):
-    with tempfile.TemporaryDirectory(prefix="mastermonk-first-run-") as directory:
+    # Windows can briefly retain a SQLite handle after the child server exits.
+    # The runner is ephemeral, so a transient cleanup lock must not turn a
+    # successful portability check into a false failure.
+    with tempfile.TemporaryDirectory(prefix="mastermonk-first-run-", ignore_cleanup_errors=os.name=="nt") as directory:
         with socket.socket() as sock:
             sock.bind(("127.0.0.1",0));port=sock.getsockname()[1]
         with tempfile.TemporaryFile() as log:
