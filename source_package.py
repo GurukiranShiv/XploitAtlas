@@ -17,7 +17,7 @@ SOURCE_FILES = (
     '.gitignore',
     'CONTRIBUTING.md',
     'Dockerfile',
-    'LICENSE',
+    'COPYRIGHT',
     'README.md',
     'SECURITY.md',
     'START.sh',
