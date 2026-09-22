@@ -2,7 +2,7 @@
 
 # MasterMonk
 
-**Open-source vulnerability intelligence for discovering, comparing, investigating, and teaching from public evidence.**
+**Vulnerability intelligence for discovering, comparing, investigating, and teaching from public evidence.**
 
 **Current version: 3.2.0 · Python 3.11+ · Windows, macOS, Linux, Android, iPhone, and iPad**
 
@@ -184,8 +184,8 @@ python -E tools/verify.py --live
 
 Live-source results are observations from the time of the run and are not embedded in the project.
 
-## Security, privacy, and licensing
+## Security, privacy, and copyright
 
 MasterMonk binds to `127.0.0.1` by default. Expose it only through a deployment you control with HTTPS, persistent storage, trusted proxy settings, and a strong administrator password. Runtime databases, imported manifests, source payloads, accounts, sessions, API keys, and `.env` files are excluded from the public source package.
 
-Read [SECURITY.md](SECURITY.md) before a shared deployment. MasterMonk is [MIT licensed](LICENSE); provider data and bundled dependencies retain their own attribution and terms in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Read [SECURITY.md](SECURITY.md) before a shared deployment. **Copyright © 2026 Gurukiran Shivashankar. All rights reserved.** Provider data and bundled dependencies retain their own attribution and terms in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
